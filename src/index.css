@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+:root {
+	color-scheme: light;
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	background: oklch(0.98 0 0);
+}
+
+/* ─── Hero dot-grid background ─────────────────────────────── */
+.hero-dot-grid {
+	background-image: radial-gradient(circle, #cbd5e1 1px, transparent 1px);
+	background-size: 28px 28px;
+}
+
+/* ─── Floating card animations ──────────────────────────────── */
+.hero-float-a {
+	animation: heroFloat 5s ease-in-out infinite;
+}
+
+.hero-float-b {
+	animation: heroFloat 5s ease-in-out infinite;
+	animation-delay: 1.6s;
+}
+
+.hero-float-c {
+	animation: heroFloat 5s ease-in-out infinite;
+	animation-delay: 3.2s;
+}
+
+@keyframes heroFloat {
+	0%,
+	100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+/* ─── Country pin pulsing ───────────────────────────────────── */
+.hero-pin {
+	animation: heroPinPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes heroPinPulse {
+	0%,
+	100% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 0.9;
+	}
+	50% {
+		transform: translate(-50%, -50%) scale(1.15);
+		opacity: 1;
+	}
+}
+
+/* ─── Expanding ping ring around pins ───────────────────────── */
+.hero-ping-ring {
+	animation: heroPingRing 2.6s ease-out infinite;
+}
+
+@keyframes heroPingRing {
+	0% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 0.7;
+	}
+	100% {
+		transform: translate(-50%, -50%) scale(2.8);
+		opacity: 0;
+	}
+}
+
+/* ─── Plane flying across the map ───────────────────────────── */
+.hero-plane-fly {
+	animation: heroPlaneFly 8s ease-in-out infinite;
+}
+
+@keyframes heroPlaneFly {
+	0% {
+		left: 8%;
+		top: 68%;
+		transform: rotate(-15deg) scale(1);
+		opacity: 0;
+	}
+	8% {
+		opacity: 1;
+	}
+	50% {
+		left: 50%;
+		top: 30%;
+		transform: rotate(5deg) scale(1.05);
+		opacity: 1;
+	}
+	92% {
+		opacity: 1;
+	}
+	100% {
+		left: 88%;
+		top: 58%;
+		transform: rotate(18deg) scale(1);
+		opacity: 0;
+	}
+}
+
+/* ─── World dots map texture overlay ───────────────────────── */
+.hero-world-dots {
+	background-image: radial-gradient(circle, rgba(99, 102, 241, 0.15) 1.5px, transparent 1.5px);
+	background-size: 18px 18px;
+}
+
+/* ─── Reduced motion overrides ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+	.hero-float-a,
+	.hero-float-b,
+	.hero-float-c,
+	.hero-pin,
+	.hero-ping-ring,
+	.hero-plane-fly {
+		animation: none;
+	}
+}
+
