@@ -1,64 +1,90 @@
 import { useState } from "react";
 import { Keyboard } from "lucide-react";
 
+const Q21_22_OPTIONS = [
+  { letter: "A", text: "receiving support from local restaurants" },
+  { letter: "B", text: "finding a good way to prevent waste" },
+  { letter: "C", text: "overcoming problems in a basic process" },
+  { letter: "D", text: "experimenting with designs and colours" },
+  { letter: "E", text: "learning how to apply 3-D printing" },
+];
+
+const Q23_24_OPTIONS = [
+  { letter: "A", text: "for use on medical products" },
+  { letter: "B", text: "to show that food is no longer fit to eat" },
+  { letter: "C", text: "for use with drinks as well as foods" },
+  { letter: "D", text: "to provide applications for blind people" },
+  { letter: "E", text: "to indicate the weight of certain foods" },
+];
+
+const FOOD_TRENDS = [
+  { id: 25, name: "Use of local products" },
+  { id: 26, name: "Reduction in unnecessary packaging" },
+  { id: 27, name: "Gluten-free and lactose-free food" },
+  { id: 28, name: "Use of branded products related to celebrity chefs" },
+  { id: 29, name: "Development of 'ghost kitchens' for takeaway food" },
+  { id: 30, name: "Use of mushrooms for common health concerns" },
+];
+
+const OPINION_OPTIONS = [
+  { letter: "A", text: "This is only relevant to young people." },
+  { letter: "B", text: "This may have disappointing results." },
+  { letter: "C", text: "This already seems to be widespread." },
+  { letter: "D", text: "Retailers should do more to encourage this." },
+  { letter: "E", text: "More financial support is needed for this." },
+  { letter: "F", text: "Most people know little about this." },
+  { letter: "G", text: "There should be stricter regulations about this." },
+  { letter: "H", text: "This could be dangerous." },
+];
+
+const letterToOpinion = Object.fromEntries(OPINION_OPTIONS.map((o) => [o.letter, o.text]));
+const opinionToLetter = Object.fromEntries(OPINION_OPTIONS.map((o) => [o.text, o.letter]));
+
 export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs }) {
-  // Drag and Drop State
   const [draggedOption, setDraggedOption] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
 
-  // Q21-25: Matching
-  const fossilCategories = [
-    { id: 21, name: "Impression fossils" },
-    { id: 22, name: "Cast fossils" },
-    { id: 23, name: "Permineralisation fossils" },
-    { id: 24, name: "Compaction fossils" },
-    { id: 25, name: "Fusain fossils" },
-  ];
+  const handleCheckboxChange = (groupKey, letter) => {
+    const firstId = groupKey === "21-22" ? "21" : "23";
+    const secondId = groupKey === "21-22" ? "22" : "24";
 
-  const poolOptions1 = [
-    "They are a very rare type of plant fossil.",
-    "They do not contain any organic matter.",
-    "They are found in soft, wet ground.",
-    "They can be found far from normal fossil areas.",
-    "They are three-dimensional.",
-    "They provide information about plant cells.",
-  ];
+    const val1 = answers[firstId] || "";
+    const val2 = answers[secondId] || "";
+    const isCurrentlyChecked = val1 === letter || val2 === letter;
 
-  // Q26-30: Flowchart
-  const poolOptions2 = [
-    "contamination",
-    "vehicle",
-    "heat",
-    "results",
-    "radiation",
-    "site",
-    "microbes",
-    "water",
-  ];
+    if (isCurrentlyChecked) {
+      if (val1 === letter) setAnswer(firstId, "");
+      else if (val2 === letter) setAnswer(secondId, "");
+    } else {
+      if (!val1) setAnswer(firstId, letter);
+      else if (!val2) setAnswer(secondId, letter);
+      else return;
+    }
 
-  // Helper functions
-  const isOptionPlaced = (opt, start, end) => {
-    for (let i = start; i <= end; i++) {
-      if (answers[String(i)] === opt) return true;
+    if (setCurrentQ) setCurrentQ(Number(firstId));
+  };
+
+  const isOptionPlaced = (optText) => {
+    const letter = opinionToLetter[optText];
+    for (let i = 25; i <= 30; i++) {
+      if (answers[String(i)] === letter) return true;
     }
     return false;
   };
 
-  // Drag handlers
-  const handleDragStart = (e, opt) => {
-    setDraggedOption(opt);
-    e.dataTransfer.setData("text/plain", opt);
+  const handleDragStart = (e, optText) => {
+    setDraggedOption(optText);
+    e.dataTransfer.setData("text/plain", optText);
   };
 
   const handleDrop = (e, questionId) => {
     e.preventDefault();
-    const opt = draggedOption || e.dataTransfer.getData("text/plain");
-    if (opt) {
-      const prevKey = Object.keys(answers).find((key) => answers[key] === opt);
-      if (prevKey) {
-        setAnswer(prevKey, "");
-      }
-      setAnswer(String(questionId), opt);
+    const optText = draggedOption || e.dataTransfer.getData("text/plain");
+    const letter = opinionToLetter[optText];
+    if (letter) {
+      const prevKey = Object.keys(answers).find((key) => answers[key] === letter);
+      if (prevKey) setAnswer(prevKey, "");
+      setAnswer(String(questionId), letter);
       setDraggedOption(null);
       setSelectedOption(null);
       if (setCurrentQ) setCurrentQ(questionId);
@@ -67,39 +93,30 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
   const handleDropToPool = (e) => {
     e.preventDefault();
-    const opt = draggedOption || e.dataTransfer.getData("text/plain");
-    if (opt) {
-      const prevKey = Object.keys(answers).find((key) => answers[key] === opt);
-      if (prevKey) {
-        setAnswer(prevKey, "");
-      }
+    const optText = draggedOption || e.dataTransfer.getData("text/plain");
+    const letter = opinionToLetter[optText] || optText;
+    if (letter) {
+      const prevKey = Object.keys(answers).find((key) => answers[key] === letter);
+      if (prevKey) setAnswer(prevKey, "");
       setDraggedOption(null);
       setSelectedOption(null);
     }
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
+  const handleDragOver = (e) => e.preventDefault();
 
-  // Click-to-select and place handlers
-  const handleOptionClick = (opt) => {
-    if (selectedOption === opt) {
-      setSelectedOption(null);
-    } else {
-      setSelectedOption(opt);
-    }
+  const handleOptionClick = (optText) => {
+    setSelectedOption((prev) => (prev === optText ? null : optText));
   };
 
   const handleSlotClick = (questionId) => {
     const currentVal = answers[String(questionId)];
 
     if (selectedOption) {
-      const prevKey = Object.keys(answers).find((key) => answers[key] === selectedOption);
-      if (prevKey) {
-        setAnswer(prevKey, "");
-      }
-      setAnswer(String(questionId), selectedOption);
+      const letter = opinionToLetter[selectedOption];
+      const prevKey = Object.keys(answers).find((key) => answers[key] === letter);
+      if (prevKey) setAnswer(prevKey, "");
+      setAnswer(String(questionId), letter);
       setSelectedOption(null);
     } else if (currentVal) {
       setAnswer(String(questionId), "");
@@ -108,238 +125,170 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
     if (setCurrentQ) setCurrentQ(questionId);
   };
 
-  // Render Slot helper
-  const renderSlot = (id, type = "block") => {
-    const assignedVal = answers[String(id)];
-    const isFocused = currentQ === id;
+  const renderMultiSelect = (groupKey, options, firstId, secondId) => (
+    <div className="flex flex-col gap-3 mt-4 ml-2">
+      {options.map((item) => {
+        const isChecked = answers[firstId] === item.letter || answers[secondId] === item.letter;
+        const totalSelected = (answers[firstId] ? 1 : 0) + (answers[secondId] ? 1 : 0);
+        const isDisabled = totalSelected >= 2 && !isChecked;
 
-    const baseClasses = `transition-all flex items-center justify-center cursor-pointer whitespace-nowrap font-sans`;
-    let containerClasses = "";
-    
-    if (type === "block") {
-      containerClasses = `flex-1 h-[28px] rounded-[3px] ${baseClasses}`;
-    } else if (type === "inline") {
-      containerClasses = `inline-flex h-[24px] mx-1 min-w-[70px] px-2 rounded-[3px] align-middle ${baseClasses}`;
-    }
-
-    let stateClasses = "";
-    if (assignedVal) {
-      // Look like the filled option
-      stateClasses = "border border-gray-400 bg-white cursor-grab active:cursor-grabbing text-black text-[17px]";
-    } else {
-      stateClasses = isFocused
-        ? "border border-dashed border-[#1a5fb4] text-[#1a5fb4] font-bold text-[17px]"
-        : "border border-dashed border-gray-500 text-black font-bold text-[17px]";
-    }
-
-    return (
-      <div
-        ref={(el) => {
-          if (el && qRefs) qRefs.current[id] = el;
-        }}
-        onClick={() => handleSlotClick(id)}
-        onDragOver={handleDragOver}
-        onDrop={(e) => handleDrop(e, id)}
-        draggable={!!assignedVal}
-        onDragStart={(e) => assignedVal && handleDragStart(e, assignedVal)}
-        className={`${containerClasses} ${stateClasses}`}
-      >
-        {assignedVal || id}
-      </div>
-    );
-  };
-
-  const ThickArrowDown = () => (
-    <div className="flex justify-center w-full my-0.5 text-black">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 2v12H6l6 8 6-8h-4V2z" />
-      </svg>
+        return (
+          <label
+            key={item.letter}
+            className={`flex items-start gap-3 p-2 rounded-md transition-colors ${
+              isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-gray-50"
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={isChecked}
+              disabled={isDisabled}
+              onChange={() => handleCheckboxChange(groupKey, item.letter)}
+              className="mt-1 w-4 h-4 text-[#1a5fb4] border-gray-300 rounded focus:ring-[#1a5fb4]"
+            />
+            <span className="text-[17px]">
+              <strong className="mr-2">{item.letter}</strong> {item.text}
+            </span>
+          </label>
+        );
+      })}
     </div>
   );
 
   return (
-    <div className="mx-auto w-full px-4 text-[13px] text-black pb-32 font-sans select-none ">
-      
-      {/* ----------------- Q21-25 ----------------- */}
-      <div className="mb-20">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <h2 className="font-bold text-[17px] mb-1">Questions 21–25</h2>
-            <p className="text-[17px]">
-              Which feature do the speakers identify for each of the following categories of fossil? Choose the correct answer for each fossil category and move it into the gap.
-            </p>
-          </div>
-          <div className="flex items-center gap-1 text-[13px] text-[#1a5fb4] font-semibold mt-6 cursor-pointer hover:underline">
-            <Keyboard className="w-4 h-4" />
-            <span>Help</span>
-          </div>
+    <div className="mx-auto w-full px-4 text-[15px] text-black pb-32 font-sans select-none">
+      {/* ----------------- Q21-22 ----------------- */}
+      <div
+        className="mb-12"
+        ref={(el) => {
+          if (el && qRefs) qRefs.current[21] = el;
+        }}
+      >
+        <div className="mb-4">
+          <h2 className="font-bold text-[16px] mb-1">Questions 21 and 22</h2>
+          <p className="text-[17px]">
+            Choose <span className="font-bold">TWO</span> letters, <span className="font-bold">A–E</span>.
+          </p>
+          <p className="text-[17px] mt-2">
+            Which <span className="font-bold">TWO</span> things did Colin find most satisfying about his bread
+            reuse project?
+          </p>
         </div>
-
-        {/* Layout Grid */}
-        <div className="flex gap-16 items-start mt-6">
-          
-          {/* Left Column: Fossil Categories */}
-          <div className="flex flex-col w-[350px]">
-            <div className="font-bold text-[17px] mb-3">Fossil categories</div>
-            <div className="flex flex-col gap-[14px]">
-              {fossilCategories.map((cat) => (
-                <div key={cat.id} className="flex items-center gap-2 mb-4 w-full">
-                  <span className="text-[17px] whitespace-nowrap">{cat.name}</span>
-                  {renderSlot(cat.id, "block")}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Column: Features Pool */}
-          <div 
-            className="flex flex-col flex-1"
-            onDragOver={handleDragOver}
-            onDrop={handleDropToPool}
-          >
-            <div className="font-bold text-[17px] mb-3">Features</div>
-            <div className="flex flex-col gap-2 items-start">
-              {poolOptions1.map((opt) => {
-                const placed = isOptionPlaced(opt, 21, 25);
-                const isSelected = selectedOption === opt;
-
-                return (
-                  <div
-                    key={opt}
-                    draggable={!placed}
-                    onDragStart={(e) => handleDragStart(e, opt)}
-                    onClick={() => !placed && handleOptionClick(opt)}
-                    className={`px-2 py-[2px] border text-[17px] rounded-[3px] select-none transition-all w-fit ${
-                      placed
-                        ? "bg-gray-100 border-gray-200 text-transparent cursor-not-allowed opacity-0"
-                        : isSelected
-                        ? "bg-[#e3effd] border-[#1a5fb4] cursor-grab"
-                        : "bg-white border-gray-400 text-black hover:bg-gray-50 cursor-grab active:cursor-grabbing"
-                    }`}
-                  >
-                    {opt}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-        </div>
+        {renderMultiSelect("21-22", Q21_22_OPTIONS, "21", "22")}
       </div>
 
+      {/* ----------------- Q23-24 ----------------- */}
+      <div
+        className="mb-16"
+        ref={(el) => {
+          if (el && qRefs) {
+            qRefs.current[22] = el;
+            qRefs.current[23] = el;
+            qRefs.current[24] = el;
+          }
+        }}
+      >
+        <div className="mb-4">
+          <h2 className="font-bold text-[16px] mb-1">Questions 23 and 24</h2>
+          <p className="text-[17px]">
+            Choose <span className="font-bold">TWO</span> letters, <span className="font-bold">A–E</span>.
+          </p>
+          <p className="text-[17px] mt-2">
+            Which <span className="font-bold">TWO</span> ways do the students agree that touch-sensitive sensors
+            for food labels could be developed in future?
+          </p>
+        </div>
+        {renderMultiSelect("23-24", Q23_24_OPTIONS, "23", "24")}
+      </div>
 
-      {/* ----------------- Q26-30 ----------------- */}
-      <div className="pt-8">
-        <div className="flex justify-between items-start mb-4">
+      {/* ----------------- Q25-30 drag & drop ----------------- */}
+      <div className="pt-4">
+        <div className="flex justify-between items-start mb-6">
           <div>
-            <h2 className="font-bold text-[17px] mb-1">Questions 26–30</h2>
+            <h2 className="font-bold text-[16px] mb-1">Questions 25–30</h2>
+            <p className="text-[17px]">What is the students&apos; opinion about each of the following food trends?</p>
             <p className="text-[17px]">
-              Complete the flow-chart. Choose the correct answer and move it into the gap.
+              Choose <span className="font-bold">SIX</span> answers from the box and write the correct letter,{" "}
+              <span className="font-bold">A–H</span>, next to Questions 25–30.
             </p>
           </div>
-          <div className="flex items-center gap-1 text-[13px] text-[#1a5fb4] font-semibold mt-1 cursor-pointer hover:underline">
+          <button
+            type="button"
+            className="flex items-center gap-1 text-[13px] text-[#1a5fb4] hover:underline font-semibold mt-1"
+          >
             <Keyboard className="w-4 h-4" />
             <span>Help</span>
-          </div>
+          </button>
         </div>
 
-        {/* Layout Grid */}
-        <div className="flex gap-8 items-start mt-12">
-          
-          {/* Left Column: Flowchart */}
-          <div className="w-[520px]">
-            <div className="font-bold text-[20px] mb-2 pl-3">Procedure for detecting life on another planet</div>
-            
-            <div className="flex flex-col items-center w-[440px]">
-              {/* Box 1 */}
-              <div className="border border-black p-1 text-[14px] text-black w-full bg-white">
-                A spacecraft lands on a planet and sends out a rover.
-              </div>
-              
-              <ThickArrowDown />
-              
-              {/* Box 2 */}
-              <div className="border border-black p-1 text-[14px] text-black w-full bg-white flex items-center flex-wrap">
-                The rover is directed to a {renderSlot(26, "inline")} which has organic material.
-              </div>
-              
-              <ThickArrowDown />
-              
-              {/* Box 3 */}
-              <div className="border border-black p-1 text-[14px] text-black w-full bg-white flex items-center flex-wrap">
-                It collects a sample from below the surface (in order to avoid the effects of {renderSlot(27, "inline")}).
-              </div>
-              
-              <ThickArrowDown />
-              
-              {/* Box 4 */}
-              <div className="border border-black p-1 text-[14px] text-black w-full bg-white">
-                The soil and rocks are checked to look for evidence of fossils.
-              </div>
-              
-              <ThickArrowDown />
-              
-              {/* Box 5 */}
-              <div className="border border-black p-1 text-[14px] text-black w-full bg-white">
-                The sample is converted to powder.
-              </div>
-              
-              <ThickArrowDown />
-              
-              {/* Box 6 */}
-              <div className="border border-black p-1 text-[14px] text-black w-full bg-white flex items-center">
-                The sample is subjected to {renderSlot(28, "inline")}
-              </div>
-              
-              <ThickArrowDown />
-              
-              {/* Box 7 */}
-              <div className="border border-black p-1 text-[14px] text-black w-full bg-white flex items-center flex-wrap">
-                A mass spectrometer is used to search for potential proof of life, e.g {renderSlot(29, "inline")}
-              </div>
-              
-              <ThickArrowDown />
-              
-              {/* Box 8 */}
-              <div className="border border-black p-1 text-[14px] text-black w-full bg-white flex items-center flex-wrap">
-                The {renderSlot(30, "inline")} are compared with existing data from Earth.
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Flowchart Pool Options */}
-          <div 
-            className="flex flex-col gap-[6px] items-start mt-6"
-            onDragOver={handleDragOver}
-            onDrop={handleDropToPool}
-          >
-            {poolOptions2.map((opt) => {
-              const placed = isOptionPlaced(opt, 26, 30);
-              const isSelected = selectedOption === opt;
+        <div className="flex gap-8 items-start">
+          <div className="flex flex-col gap-4">
+            <div className="font-bold text-[17px] mb-1">Food trends</div>
+            {FOOD_TRENDS.map((item) => {
+              const assignedLetter = answers[String(item.id)];
+              const displayText = letterToOpinion[assignedLetter];
+              const isFocused = currentQ === item.id;
 
               return (
-                <div
-                  key={opt}
-                  draggable={!placed}
-                  onDragStart={(e) => handleDragStart(e, opt)}
-                  onClick={() => !placed && handleOptionClick(opt)}
-                  className={`px-2 py-[1px] border text-[17px] rounded-[3px] select-none transition-all w-fit ${
-                    placed
-                      ? "bg-gray-100 border-gray-200 text-transparent cursor-not-allowed opacity-0"
-                      : isSelected
-                      ? "bg-[#e3effd] border-[#1a5fb4] cursor-grab"
-                      : "bg-white border-gray-400 text-black hover:bg-gray-50 cursor-grab active:cursor-grabbing"
-                  }`}
-                >
-                  {opt}
+                <div key={item.id} className="flex items-center gap-2 min-h-[32px]">
+                  <span className="text-[17px] text-black min-w-[340px]">
+                    {item.id} {item.name}
+                  </span>
+                  <div
+                    ref={(el) => {
+                      if (el && qRefs) qRefs.current[item.id] = el;
+                    }}
+                    onClick={() => handleSlotClick(item.id)}
+                    onDragOver={handleDragOver}
+                    onDrop={(e) => handleDrop(e, item.id)}
+                    draggable={!!assignedLetter}
+                    onDragStart={(e) => assignedLetter && handleDragStart(e, displayText)}
+                    className={`h-[24px] rounded-md transition-all flex items-center justify-center cursor-pointer text-[15px] whitespace-nowrap ${
+                      assignedLetter
+                        ? "w-auto max-w-[320px] px-3 border-2 border-[#1a5fb4] bg-white cursor-grab active:cursor-grabbing"
+                        : `w-[80px] border border-dashed bg-white ${
+                            isFocused
+                              ? "border-2 border-dashed border-[#1a5fb4]"
+                              : "border-gray-500 text-gray-800 font-bold"
+                          }`
+                    }`}
+                  >
+                    {assignedLetter || item.id}
+                  </div>
                 </div>
               );
             })}
           </div>
 
+          <div className="flex flex-col gap-3" onDragOver={handleDragOver} onDrop={handleDropToPool}>
+            <div className="font-semibold text-[17px] mb-1">Opinions</div>
+            <div className="flex flex-col gap-2">
+              {OPINION_OPTIONS.map((opt) => {
+                const placed = isOptionPlaced(opt.text);
+                const isSelected = selectedOption === opt.text;
+
+                return (
+                  <div
+                    key={opt.letter}
+                    draggable={!placed}
+                    onDragStart={(e) => handleDragStart(e, opt.text)}
+                    onClick={() => !placed && handleOptionClick(opt.text)}
+                    className={`px-2.5 py-0.5 border border-gray-600 text-[14px] rounded-[4px] select-none transition-all w-fit max-w-[380px] ${
+                      placed
+                        ? "bg-gray-100 border-gray-200 cursor-not-allowed opacity-0"
+                        : isSelected
+                          ? "bg-[#e3effd] border cursor-grab font-semibold"
+                          : "bg-white text-black hover:bg-gray-50 cursor-grab active:cursor-grabbing"
+                    }`}
+                  >
+                    <strong className="mr-1">{opt.letter}</strong> {opt.text}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   );
 }
