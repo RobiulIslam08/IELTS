@@ -3,58 +3,52 @@ import { useEffect, useRef } from "react";
 import CheckboxRow from "./CheckboxRow";
 import NumberedInput from "./NumberedInput";
 
-const HEADINGS = [
-  "How a maths experiment actually reduced traffic congestion",
-  "How a concept from one field of study was applied in another",
-  "A lack of investment in driver training",
-  "Areas of doubt and disagreement between experts",
-  "How different countries have dealt with traffic congestion",
-  "The impact of driver behavior on traffic speed",
-  "A proposal to take control away from the driver",
+const MATCH_ITEMS = [
+  { num: 14, text: "a reference to a denial of involvement in piracy" },
+  { num: 15, text: "details of how a campaign to eradicate piracy was carried out" },
+  { num: 16, text: "a mention of the circumstances in which states in the ancient world would make use of pirates" },
+  { num: 17, text: "a reference to how people today commonly view pirates" },
+  { num: 18, text: "an explanation of how some people were encouraged not to return to piracy" },
+  { num: 19, text: "a mention of the need for many sailing vessels to stay relatively close to land" },
 ];
+
+const MATCH_NUMS = MATCH_ITEMS.map((item) => item.num);
 
 const CHECKBOX_GROUPS = [
   {
-    range: [18, 19],
-    prompt: "Which TWO options describe what the writer is doing in section two?",
-    options: [
-      "explaining Helbing and Kerner's attitude to chaos theory",
-      "clarifying Helbing and Kerner's conclusions about traffic behaviour",
-      "showing how weather and temperature can change traffic flow",
-      "drawing parallels between the behaviour of clouds and traffic",
-      "giving examples of different potential causes of congestion",
-    ],
-  },
-  {
     range: [20, 21],
-    prompt: "Which TWO statements reflect civil engineers' opinions of the physicists' theories?",
+    prompt:
+      "Which TWO of the following statements does the writer make about inhabitants of the Mediterranean region in the ancient world?",
     options: [
-      "They fail to take into account road maintenance.",
-      "They may have little to do with everyday traffic behaviour.",
-      "They are inconsistent with chaos theory.",
-      "They do not really describe anything new.",
-      "They can easily be disproved.",
+      { id: "A", label: "They often used stolen vessels to carry out pirate attacks." },
+      { id: "B", label: "They managed to escape capture by the authorities because they knew the area so well." },
+      { id: "C", label: "They paid for information about the routes merchant ships would take." },
+      { id: "D", label: "They depended more on the sea for their livelihood than on farming." },
+      { id: "E", label: "They stored many of the goods taken in pirate attacks in coves along the coastline." },
     ],
   },
   {
     range: [22, 23],
-    prompt: "Which TWO of the following options express the purpose of the text?",
+    prompt: "Which TWO of the following statements does the writer make about piracy and ancient Greece?",
     options: [
-      "to change the behaviour of vehicle drivers",
-      "to discuss contrasting approaches to understanding congestion",
-      "to recommend a practical rather than a theoretical approach to traffic control",
-      "to inform drivers of future changes to traffic control methods",
-      "to give details of some of the behaviours shown by traffic",
+      { id: "A", label: "The state estimated that very few people were involved in piracy." },
+      { id: "B", label: "Attitudes towards piracy changed shortly after the Iliad and the Odyssey were written." },
+      { id: "C", label: "Important officials were known to occasionally take part in piracy." },
+      { id: "D", label: "Every citizen regarded pirate attacks on cities as unacceptable." },
+      { id: "E", label: "A favourable view of piracy is evident in certain ancient Greek texts." },
     ],
   },
 ];
 
-function DraggableHeading({ text, used }) {
+function DraggableStatement({ text, num, used }) {
   return (
     <div
       draggable
-      onDragStart={(e) => e.dataTransfer.setData("text/heading", text)}
-      className={` border border-gray-500 rounded-sm px-2  my-1 font-bold mr-2 text-[17px] font-bold bg-white ${
+      onDragStart={(e) => {
+        e.dataTransfer.setData("text/statement", String(num));
+        e.dataTransfer.effectAllowed = "copy";
+      }}
+      className={`border border-gray-500 rounded-sm px-2 my-1 font-bold mr-2 text-[17px] bg-white ${
         used ? "opacity-40 cursor-grab hover:bg-gray-50" : "cursor-grab hover:bg-gray-50"
       }`}
     >
@@ -75,26 +69,29 @@ function CheckboxQuestion({ group, answers, setAnswer, setCurrentQ, registerQRef
     registerQRef(b, groupRef.current);
   }, [a, b, registerQRef]);
 
-  const toggle = (opt) => {
+  const toggle = (id) => {
     setCurrentQ(a);
     let next;
-    if (selected.includes(opt)) next = selected.filter((x) => x !== opt);
-    else if (selected.length >= 2) next = [selected[1], opt];
-    else next = [...selected, opt];
+    if (selected.includes(id)) next = selected.filter((x) => x !== id);
+    else if (selected.length >= 2) next = [selected[1], id];
+    else next = [...selected, id];
     setAnswer(key, next);
   };
+
   return (
-    <div
-      ref={groupRef}
-      className="mb-6"
-    >
+    <div ref={groupRef} className="mb-6">
       <div className="flex gap-2 items-start mb-2">
-        <span className="font-semibold text-[17px] ">{`${a}-${b}`}</span>
-        <span className="leading-normal">{group.prompt}</span>
+        <span className="font-semibold text-[17px]">{`${a}–${b}`}</span>
+        <span className="leading-normal text-[17px]">{group.prompt}</span>
       </div>
       <div className="space-y-0.5">
         {group.options.map((opt) => (
-          <CheckboxRow key={opt} label={opt} checked={selected.includes(opt)} onToggle={() => toggle(opt)} />
+          <CheckboxRow
+            key={opt.id}
+            label={`${opt.id}  ${opt.label}`}
+            checked={selected.includes(opt.id)}
+            onToggle={() => toggle(opt.id)}
+          />
         ))}
       </div>
     </div>
@@ -102,78 +99,129 @@ function CheckboxQuestion({ group, answers, setAnswer, setCurrentQ, registerQRef
 }
 
 export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs, registerQRef }) {
-  const usedHeadings = [14, 15, 16, 17].map((n) => answers[String(n)]).filter(Boolean);
-  const clearDroppedHeading = (heading) => {
-    [14, 15, 16, 17].forEach((num) => {
-      if (answers[String(num)] === heading) {
-        setAnswer(String(num), null);
-      }
-    });
-  };
+  const usedStatements = MATCH_NUMS.filter((num) =>
+    MATCH_NUMS.some((slot) => Number(answers[String(slot)]) === num)
+  );
 
   return (
     <>
       <div
         ref={(el) => {
           if (!el || !registerQRef) return;
-          [14, 15, 16, 17].forEach((n) => registerQRef(n, el));
+          MATCH_NUMS.forEach((n) => registerQRef(n, el));
         }}
         className="mb-6"
       >
-        <h3 className="font-bold text-[17px] mb-1">Questions 14-17</h3>
+        <h3 className="font-bold text-[17px] mb-1">Questions 14–19</h3>
         <p className="text-[17px] mb-3">
-          The text has four sections. Choose the correct heading for each section and move it into
-          the gap.
+          The text has seven paragraphs, <strong>A–G</strong>. Choose the correct information for
+          each question and move it into the gap.
         </p>
-        <p className="font-semibold text-[17px] mb-2">List of Headings</p>
+        <p className="text-[17px] mb-3">
+          <strong>NB</strong> You may use any letter more than once.
+        </p>
+
+        <p className="font-semibold text-[17px] mb-2">List of Information</p>
         <div
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
             e.preventDefault();
-            const heading = e.dataTransfer.getData("text/heading");
-            if (heading) clearDroppedHeading(heading);
+            const raw = e.dataTransfer.getData("text/statement");
+            if (!raw) return;
+            MATCH_NUMS.forEach((slot) => {
+              if (Number(answers[String(slot)]) === Number(raw)) {
+                setAnswer(String(slot), null);
+              }
+            });
           }}
-          className=" bg-white p-1 pl-3"
-          title="Drop a heading here to return it"
+          className="bg-white p-1 pl-3"
+          title="Drop a statement here to return it"
         >
-          {HEADINGS.map((h) => (
-            <DraggableHeading key={h} text={h} used={usedHeadings.includes(h)} />
+          {MATCH_ITEMS.map((item) => (
+            <DraggableStatement
+              key={item.num}
+              num={item.num}
+              text={item.text}
+              used={usedStatements.includes(item.num)}
+            />
           ))}
         </div>
       </div>
 
-      <h3 className="font-bold text-[17px] mb-1 mt-6">Questions 18-23</h3>
-      <p className="text-[17px] mb-4">Choose <span className="font-bold">TWO</span> correct answers.</p>
-
-      {CHECKBOX_GROUPS.map((g) => (
-        <CheckboxQuestion
-          key={g.range[0]}
-          group={g}
-          answers={answers}
-          setAnswer={setAnswer}
-          currentQ={currentQ} setCurrentQ={setCurrentQ}
-          registerQRef={registerQRef}
-        />
-      ))}
-
-      <h3 className="font-bold text-[17px] mb-1 mt-6">Questions 24-26</h3>
+      <h3 className="font-bold text-[17px] mb-1 mt-6">Questions 20 and 21</h3>
+      <p className="text-[17px] mb-1">
+        Choose <strong>TWO</strong> letters, <strong>A–E</strong>.
+      </p>
       <p className="text-[17px] mb-4">
-        Complete the summary. Write <strong>ONE WORD ONLY</strong> from the text for each answer.
+        Write the correct letters in boxes 20 and 21 on your answer sheet.
       </p>
 
-      <h4 className="font-bold text-[18px] text-black mb-3">Physicists' theories on gas molecules and traffic flow</h4>
-      <p className=" text-[17px] ">
-        Using simulations based on
-        <NumberedInput num={24} answers={answers} setAnswer={setAnswer} qRefs={qRefs} currentQ={currentQ} setCurrentQ={setCurrentQ} />
-        more commonly used to illustrate the movement of molecules in a gas, physicists showed that
-        there are similarities between the ways gas molecules and traffic behave. They are not
-        similar in all aspects - gas molecules randomly crash into one another but drivers prevent
-        <NumberedInput num={25} answers={answers} setAnswer={setAnswer} qRefs={qRefs} currentQ={currentQ} setCurrentQ={setCurrentQ} />
-        from happening by altering their speed. The physicists' investigations seemed to show that
-        congestion can occur even when traffic is moving without problem and when its
-        <NumberedInput num={26} answers={answers} setAnswer={setAnswer} qRefs={qRefs} currentQ={currentQ} setCurrentQ={setCurrentQ} />
-        is within approved levels for the road.
+      <CheckboxQuestion
+        group={CHECKBOX_GROUPS[0]}
+        answers={answers}
+        setAnswer={setAnswer}
+        setCurrentQ={setCurrentQ}
+        registerQRef={registerQRef}
+      />
+
+      <h3 className="font-bold text-[17px] mb-1 mt-6">Questions 22 and 23</h3>
+      <p className="text-[17px] mb-1">
+        Choose <strong>TWO</strong> letters, <strong>A–E</strong>.
       </p>
+      <p className="text-[17px] mb-4">
+        Write the correct letters in boxes 22 and 23 on your answer sheet.
+      </p>
+
+      <CheckboxQuestion
+        group={CHECKBOX_GROUPS[1]}
+        answers={answers}
+        setAnswer={setAnswer}
+        setCurrentQ={setCurrentQ}
+        registerQRef={registerQRef}
+      />
+
+      <h3 className="font-bold text-[17px] mb-1 mt-6">Questions 24–26</h3>
+      <p className="text-[17px] mb-1">Complete the summary below.</p>
+      <p className="text-[17px] mb-1">
+        Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.
+      </p>
+      <p className="text-[17px] mb-4">Write your answers in boxes 24–26 on your answer sheet.</p>
+
+      <div className="border border-black px-5 py-4">
+        <h4 className="font-bold text-[17px] text-center mb-4">Ancient Rome and piracy</h4>
+        <p className="text-[17px] leading-[1.7]">
+          Piracy was an issue ancient Rome had to deal with, but it also brought some benefits for
+          Rome. For example, pirates supplied slaves that were important for Rome's industries.
+          However, attacks on vessels transporting
+          <NumberedInput
+            num={24}
+            answers={answers}
+            setAnswer={setAnswer}
+            qRefs={qRefs}
+            currentQ={currentQ}
+            setCurrentQ={setCurrentQ}
+          />
+          to Rome resulted in calls for
+          <NumberedInput
+            num={25}
+            answers={answers}
+            setAnswer={setAnswer}
+            qRefs={qRefs}
+            currentQ={currentQ}
+            setCurrentQ={setCurrentQ}
+          />
+          for the pirates responsible. Nevertheless, piracy continued, with some pirates demanding a
+          <NumberedInput
+            num={26}
+            answers={answers}
+            setAnswer={setAnswer}
+            qRefs={qRefs}
+            currentQ={currentQ}
+            setCurrentQ={setCurrentQ}
+          />
+          for the return of the Roman officials they captured.
+        </p>
+      </div>
     </>
   );
 }
