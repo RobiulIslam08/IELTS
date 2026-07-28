@@ -2,6 +2,10 @@
 
 :root {
 	color-scheme: light;
+	--radius: 0.625rem;
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.129 0.042 264.695);
+	--border: oklch(0.929 0.013 255.508);
 }
 
 body {
@@ -9,6 +13,42 @@ body {
 	min-width: 320px;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	background: oklch(0.98 0 0);
+}
+
+/* === Inspera-like scrollbar (Reading exam split panes) === */
+.inspera-scroll::-webkit-scrollbar {
+	width: 16px;
+	height: 16px;
+}
+.inspera-scroll::-webkit-scrollbar-track {
+	background: #fcfcfc;
+	border-left: 1px solid #e5e5e5;
+}
+.inspera-scroll::-webkit-scrollbar-thumb {
+	background: #8e8e8e;
+	border-radius: 0;
+}
+.inspera-scroll::-webkit-scrollbar-thumb:hover {
+	background: #6e6e6e;
+}
+.inspera-scroll {
+	scrollbar-color: #8e8e8e #fcfcfc;
+	scrollbar-width: auto;
+	overflow-y: scroll;
+}
+
+@media (max-width: 900px) {
+	.inspera-split {
+		flex-direction: column;
+	}
+
+	.inspera-split > section {
+		width: 100% !important;
+	}
+
+	.inspera-resize {
+		display: none;
+	}
 }
 
 /* ─── Hero dot-grid background ─────────────────────────────── */
