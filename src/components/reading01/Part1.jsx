@@ -118,7 +118,7 @@ export default function Part1({ answers, setAnswer, currentQ, setCurrentQ, qRefs
       </p>
       <p className="mb-4 text-[17px]">Write your answers in boxes 8–13 on your answer sheet.</p>
 
-      <div className="border border-black px-5 py-4">
+      <div className=" px-5 py-4">
         <h4 className="font-bold text-[17px] text-center mb-4">
           The tennis racket and how it has changed
         </h4>

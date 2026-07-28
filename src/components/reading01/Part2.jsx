@@ -187,7 +187,7 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
       </p>
       <p className="text-[17px] mb-4">Write your answers in boxes 24–26 on your answer sheet.</p>
 
-      <div className="border border-black px-5 py-4">
+      <div className=" px-5 py-4">
         <h4 className="font-bold text-[17px] text-center mb-4">Ancient Rome and piracy</h4>
         <p className="text-[17px] leading-[1.7]">
           Piracy was an issue ancient Rome had to deal with, but it also brought some benefits for

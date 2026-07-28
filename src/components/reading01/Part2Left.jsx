@@ -108,7 +108,7 @@ export default function Part2Left({ answers, setAnswer }) {
           <div key={p.id}>
             <StatementSlot paragraphId={p.id} answers={answers} setAnswer={setAnswer} />
             <div className="flex gap-3 mb-4">
-              <span className="font-bold flex-shrink-0 w-5">{p.id}</span>
+              {/* <span className="font-bold flex-shrink-0 w-5">{p.id}</span> */}
               <p className="flex-1">{p.text}</p>
             </div>
           </div>

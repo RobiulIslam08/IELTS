@@ -156,7 +156,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
   );
 
   return (
-    <div className="mx-auto w-full px-4 text-[15px] text-black pb-32 font-sans select-none">
+    <div className="mx-auto w-full px-4 text-[15px] text-black pb-32 font-sans select-text">
       {/* ----------------- Q21-22 ----------------- */}
       <div
         className="mb-12"
@@ -207,10 +207,6 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
           <div>
             <h2 className="font-bold text-[16px] mb-1">Questions 25–30</h2>
             <p className="text-[17px]">What is the students&apos; opinion about each of the following food trends?</p>
-            <p className="text-[17px]">
-              Choose <span className="font-bold">SIX</span> answers from the box and write the correct letter,{" "}
-              <span className="font-bold">A–H</span>, next to Questions 25–30.
-            </p>
           </div>
           <button
             type="button"
@@ -245,7 +241,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
                     onDragStart={(e) => assignedLetter && handleDragStart(e, displayText)}
                     className={`h-[24px] rounded-md transition-all flex items-center justify-center cursor-pointer text-[15px] whitespace-nowrap ${
                       assignedLetter
-                        ? "w-auto max-w-[320px] px-3 border-2 border-[#1a5fb4] bg-white cursor-grab active:cursor-grabbing"
+                        ? "w-fit px-3 border-2 border-[#1a5fb4] bg-white cursor-grab active:cursor-grabbing"
                         : `w-[80px] border border-dashed bg-white ${
                             isFocused
                               ? "border-2 border-dashed border-[#1a5fb4]"
@@ -253,7 +249,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
                           }`
                     }`}
                   >
-                    {assignedLetter || item.id}
+                    {displayText || item.id}
                   </div>
                 </div>
               );
@@ -273,7 +269,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
                     draggable={!placed}
                     onDragStart={(e) => handleDragStart(e, opt.text)}
                     onClick={() => !placed && handleOptionClick(opt.text)}
-                    className={`px-2.5 py-0.5 border border-gray-600 text-[14px] rounded-[4px] select-none transition-all w-fit max-w-[380px] ${
+                    className={`px-2.5 py-0.5 border border-gray-600 text-[14px] rounded-[4px] select-none transition-all w-fit ${
                       placed
                         ? "bg-gray-100 border-gray-200 cursor-not-allowed opacity-0"
                         : isSelected
@@ -281,7 +277,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
                           : "bg-white text-black hover:bg-gray-50 cursor-grab active:cursor-grabbing"
                     }`}
                   >
-                    <strong className="mr-1">{opt.letter}</strong> {opt.text}
+                    {opt.text}
                   </div>
                 );
               })}

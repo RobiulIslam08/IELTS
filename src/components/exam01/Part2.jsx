@@ -157,7 +157,7 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
   };
 
   return (
-    <div className="mx-auto w-full px-4 text-[15px] text-black pb-32 font-sans select-none">
+    <div className="mx-auto w-full px-4 text-[15px] text-black pb-32 font-sans select-text">
       {/* ----------------- Q11-15 MCQ ----------------- */}
       <div className="mb-16">
         <div className="mb-4">

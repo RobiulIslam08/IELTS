@@ -256,7 +256,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
       <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start">
         {/* Summary — left */}
-        <div className="border border-black px-4 py-4 flex-1 min-w-0 w-full">
+        <div className=" px-4 py-4 flex-1 min-w-0 w-full">
           <h4 className="font-bold text-[17px] text-center mb-4">
             What happens when people encounter misinformation?
           </h4>
@@ -329,7 +329,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
         {/* List of Phrases — side */}
         <div
-          className="border border-black px-3 py-3 w-full lg:w-[240px] shrink-0 lg:sticky lg:top-2"
+          className=" px-3 py-3 w-full lg:w-[240px] shrink-0 lg:sticky lg:top-2"
           onDragOver={(e) => e.preventDefault()}
           onDrop={returnPhraseToList}
         >
