@@ -2,98 +2,92 @@
 export default function Part1Left() {
   return (
     <>
-      <h2 className="font-bold text-[18px] mb-4">The life and work of Marie Curie</h2>
-      <div className="space-y-4 leading-[1.5] text-[17px]  text-black">
+      <h2 className="font-bold text-[18px] mb-4">How tennis rackets have changed</h2>
+      <div className="space-y-4 leading-[1.5] text-[17px] text-black">
         <p>
-          Marie Curie is probably the most famous woman scientist who has ever lived. Born Maria
-          Sklodowska in Poland in 1867, she is famous for her work on radioactivity, and was twice a
-          winner of the Nobel Prize. With her husband, Pierre Curie, and Henri Becquerel, she was
-          awarded the 1903 Nobel Prize for Physics, and was then sole winner of the 1911 Nobel
-          Prize for Chemistry. She was the first woman to win a Nobel Prize.
+          In 2016, the British professional tennis player Andy Murray was ranked as the world's number
+          one. It was an incredible achievement by any standard — made even more remarkable by the
+          fact that he did this during a period considered to be one of the strongest in the sport's history,
+          competing against the likes of Rafael Nadal, Roger Federer and Novak Djokovic, to name just a
+          few. Yet five years previously, he had been regarded as a talented outsider who entered but never
+          won the major tournaments.
         </p>
         <p>
-          From childhood, Marie was remarkable for her prodigious memory, and at the age of 16 won
-          a gold medal on completion of her secondary education. Because her father lost his
-          savings through bad investment, she then had to take work as a teacher. From her
-          earnings she was able to finance her sister Bronia's medical studies in Paris, on the
-          understanding that Bronia would, in turn, later help her to get an education.
+          Of the changes that account for this transformation, one was visible and widely publicised: in
+          2011, Murray invited former number one player Ivan Lendl onto his coaching team — a valuable
+          addition that had a visible impact on the player's playing style. Another change was so subtle
+          as to pass more or less unnoticed. Like many players, Murray has long preferred a racket
+          that consists of two types of string: one for the mains (verticals) and another for the crosses
+          (horizontals). While he continued to use natural string in the crosses, in 2012 he switched
+          to a synthetic string for the mains. A small change, perhaps, but its importance should not
+          be underestimated.
         </p>
         <p>
-          In 1891 this promise was fulfilled and Marie went to Paris and began to study at the
-          Sorbonne (the University of Paris). She often worked far into the night and lived on
-          little more than bread and butter and tea. She came first in the examination in the
-          physical sciences in 1893, and in 1894 was placed second in the examination in
-          mathematical sciences. It was not until the spring of that year that she was introduced
-          to Pierre Curie.
+          The modification that Murray made is just one of a number of options available to players
+          looking to tweak their rackets in order to improve their games. 'Touring professionals have their
+          rackets customised to their specific needs,' says Colin Triplow, a UK-based professional racket
+          stringer. 'It's a highly important part of performance maximisation.' Consequently, the specific
+          rackets used by the world's elite are not actually readily available to the public; rather, each
+          racket is individually made to suit the player who uses it. Take the US professional tennis players
+          Mike and Bob Bryan, for example: 'We're very particular with our racket specifications,' they
+          say. 'All our rackets are sent from our manufacturer to Tampa, Florida, where our frames go
+          through a . . . thorough customisation process.' They explain how they have adjusted not
+          only racket length, but even experimented with different kinds of paint. The rackets they use
+          now weigh more than the average model and also have a denser string pattern (i.e. more crosses
+          and mains).
         </p>
         <p>
-          Their marriage in 1895 marked the start of a partnership that was soon to achieve results
-          of world significance. Following Henri Becquerel's discovery in 1896 of a new
-          phenomenon, which Marie later called 'radioactivity', Marie Curie decided to find out if
-          the radioactivity discovered in uranium was to be found in other elements. She discovered
-          that this was true for thorium.
+          The primary reason for these modifications is simple: as the line between winning and losing
+          becomes thinner and thinner, even these slight changes become more and more important. As a
+          result, players and their teams are becoming increasingly creative with the modifications to their
+          rackets as they look to maximise their competitive advantage.
         </p>
         <p>
-          Turning her attention to minerals, she found her interest drawn to pitchblende, a mineral
-          whose radioactivity, superior to that of pure uranium, could be explained only by the
-          presence in the ore of small quantities of an unknown substance of very high activity.
-          Pierre Curie joined her in the work that she had undertaken to resolve this problem, and
-          that led to the discovery of the new elements, polonium and radium. While Pierre Curie
-          devoted himself chiefly to the physical study of the new radiations, Marie Curie
-          struggled to obtain pure radium in the metallic state. This was achieved with the help of
-          the chemist Andre-Louis Debierne, one of Pierre Curie's pupils. Based on the results of
-          this research, Marie Curie received her Doctorate of Science, and in 1903 Marie and
-          Pierre shared with Becquerel the Nobel Prize for Physics for the discovery of
-          radioactivity.
+          Racket modifications mainly date back to the 1970s, when the amateur German tennis player
+          Werner Fischer started playing with the so-called spaghetti-strung racket. It created a string bed
+          that generated so much topspin that it was quickly banned by the International Tennis Federation.
+          However, within a decade or two, racket modification became a regularity. Today it is, in many
+          ways, an aspect of the game that is equal in significance to nutrition or training.
         </p>
         <p>
-          The births of Marie's two daughters, Irene and Eve, in 1897 and 1904 failed to interrupt
-          her scientific work. She was appointed lecturer in physics at the Ecole Normale
-          Superieure for girls in Sevres, France (1900), and introduced a method of teaching based
-          on experimental demonstrations. In December 1904 she was appointed chief assistant in the
-          laboratory directed by Pierre Curie.
+          Modifications can be divided into two categories: those to the string bed and those to the racket
+          frame. The former is far more common than the latter: the choice of the strings and the tension
+          with which they are installed is something that nearly all professional players experiment with.
+          They will continually change it depending on various factors including the court surface, climatic
+          conditions, and game styles. Some will even change it depending on how they feel at the time.
         </p>
         <p>
-          The sudden death of her husband in 1906 was a bitter blow to Marie Curie, but was also a
-          turning point in her career: henceforth she was to devote all her energy to completing
-          alone the scientific work that they had undertaken. On May 13, 1906, she was appointed to
-          the professorship that had been left vacant on her husband's death, becoming the first
-          woman to teach at the Sorbonne. In 1911 she was awarded the Nobel Prize for Chemistry for
-          the isolation of a pure form of radium.
+          At one time, all tennis rackets were strung with natural gut made from the outer layer of sheep or
+          cow intestines. This all changed in the early 1990s with the development of synthetic strings that
+          were cheaper and more durable. They are made from three materials: nylon (relatively durable
+          and affordable), Kevlar (too stiff to be used alone) or co-polyester (polyester combined with
+          additives that enhance its performance). Even so, many professional players continue to use a
+          'hybrid set-up', where a combination of both synthetic and natural strings are used.
         </p>
         <p>
-          During World War I, Marie Curie, with the help of her daughter Irene, devoted herself to
-          the development of the use of X-radiography, including the mobile units which came to be
-          known as 'Little Curies', used for the treatment of wounded soldiers. In 1918 the Radium
-          Institute, whose staff Irene had joined, began to operate in earnest, and became a centre
-          for nuclear physics and chemistry. Marie Curie, now at the highest point of her fame and,
-          from 1922, a member of the Academy of Medicine, researched the chemistry of radioactive
-          substances and their medical applications.
+          Of the synthetics, co-polyester is by far the most widely used. It's a perfect fit for the style of
+          tennis now played, where players tend to battle it out from the back of the court rather than
+          coming to the net. Studies indicate that the average spin from a co-polyester string is 25% greater
+          than that from natural string or other synthetics. In a sense, the development of co-polyester
+          strings has revolutionised the game.
         </p>
         <p>
-          In 1921, accompanied by her two daughters, Marie Curie made a triumphant journey to the
-          United States to raise funds for research on radium. Women there presented her with a gram
-          of radium for her campaign. Marie also gave lectures in Belgium, Brazil, Spain and
-          Czechoslovakia and, in addition, had the satisfaction of seeing the development of the
-          Curie Foundation in Paris, and the inauguration in 1932 in Warsaw of the Radium
-          Institute, where her sister Bronia became director.
+          However, many players go beyond these basic adjustments to the strings and make changes
+          to the racket frame itself. For example, much of the serving power of US professional player
+          Pete Sampras was attributed to the addition of four to five lead weights onto his rackets, and
+          today many professionals have the weight adjusted during the manufacturing process.
         </p>
         <p>
-          One of Marie Curie's outstanding achievements was to have understood the need to
-          accumulate intense radioactive sources, not only to treat illness but also to maintain an
-          abundant supply for research. The existence in Paris at the Radium Institute of a stock
-          of 1.5 grams of radium made a decisive contribution to the success of the experiments
-          undertaken in the years around 1930. This work prepared the way for the discovery of the
-          neutron by Sir James Chadwick and, above all, for the discovery in 1934 by Irene and
-          Frederic Joliot-Curie of artificial radioactivity. A few months after this discovery,
-          Marie Curie died as a result of leukaemia caused by exposure to radiation. She had often
-          carried test tubes containing radioactive isotopes in her pocket, remarking on the pretty
-          blue-green light they gave off.
+          Other changes to the frame involve the handle. Players have individual preferences for the
+          shape of the handle and some will have the handle of one racket moulded onto the frame of
+          a different racket. Other players make different changes. The professional Portuguese player
+          Gonçalo Oliveira replaced the original grips of his rackets with something thinner because they
+          had previously felt uncomfortable to hold.
         </p>
         <p>
-          Her contribution to physics had been immense, not only in her own work, the importance of
-          which had been demonstrated by her two Nobel Prizes, but because of her influence on
-          subsequent generations of nuclear physicists and chemists.
+          Racket customisation and modification have pushed the standards of the game to greater levels
+          that few could have anticipated in the days of natural strings and heavy, wooden frames, and it's
+          exciting to see what further developments there will be in the future.
         </p>
       </div>
     </>

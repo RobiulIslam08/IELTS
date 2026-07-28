@@ -3,65 +3,69 @@ import RadioRow from "./RadioRow";
 import NumberedInput from "./NumberedInput";
 
 const TF_QUESTIONS = [
-  "Marie Curie's husband was a joint winner of both Marie's Nobel Prizes.",
-  "Marie became interested in science when she was a child.",
-  "Marie was able to attend the Sorbonne because of her sister's financial contribution.",
-  "Marie stopped doing research for several years when her children were born.",
-  "Marie took over the teaching position her husband had held.",
-  "Marie's sister Bronia studied the medical uses of radioactivity.",
+  "People had expected Andy Murray to become the world's top tennis player for at least five years before 2016.",
+  "The change that Andy Murray made to his rackets attracted a lot of attention.",
+  "Most of the world's top players take a professional racket stringer on tour with them.",
+  "Mike and Bob Bryan use rackets that are light in comparison to the majority of rackets.",
+  "Werner Fischer played with a spaghetti-strung racket that he designed himself.",
+  "The weather can affect how professional players adjust the strings on their rackets.",
+  "It was believed that the change Pete Sampras made to his rackets contributed to his strong serve.",
 ];
 
 const NOTE_QUESTIONS = [
   {
-    num: 7,
-    before:
-      "When uranium was discovered to be radioactive, Marie Curie found that the element called",
-    after: "had the same property.",
-  },
-  {
     num: 8,
-    before: "Marie and Pierre Curie's research into the radioactivity of the mineral known as",
-    after: "led to the discovery of two new elements.",
+    before: "Mike and Bob Bryan made changes to the types of",
+    after: "used on their racket frames.",
   },
   {
     num: 9,
-    before: "In 1911, Marie Curie received recognition for her work on the element",
-    after: ".",
+    before: "Players were not allowed to use the spaghetti-strung racket because of the amount of",
+    after: "it created.",
   },
   {
     num: 10,
-    before: "Marie and Irene Curie developed X-radiography which was used as a medical technique for",
-    after: ".",
+    before: "Changes to rackets can be regarded as being as important as players' diets or the",
+    after: "they do.",
   },
   {
     num: 11,
-    before:
-      "Marie Curie saw the importance of collecting radioactive material both for research and for cases of",
-    after: ".",
+    before: "All rackets used to have natural strings made from the",
+    after: "of animals.",
   },
   {
     num: 12,
-    before:
-      "The radioactive material stocked in Paris contributed to the discoveries in the 1930s of the",
-    after: "and of what was known as artificial radioactivity.",
+    before: "Pete Sampras had metal",
+    after: "put into the frames of his rackets.",
   },
   {
     num: 13,
-    before:
-      "During her research, Marie Curie was exposed to radiation and as a result she suffered from",
-    after: ".",
+    before: "Gonçalo Oliveira changed the",
+    after: "on his racket handles.",
   },
 ];
 
 export default function Part1({ answers, setAnswer, currentQ, setCurrentQ, qRefs }) {
   return (
     <>
-      <h3 className="font-bold text-[17px] mb-1">Questions 1-6</h3>
-      <p className="mb-4 leading-[1.5] text-[17px] text-black">
-        Choose <strong className="font-bold">TRUE</strong> if the statement agrees with the information given in the
-        text, choose <strong className="font-bold">FALSE</strong> if the statement contradicts the information, or choose{" "}
-        <strong className="font-bold">NOT GIVEN</strong> if there is no information on this.
+      <h3 className="font-bold text-[17px] mb-1">Questions 1–7</h3>
+      <p className="mb-1 leading-[1.5] text-[17px] text-black">
+        Do the following statements agree with the information given in Reading Passage 1?
       </p>
+      <p className="mb-2 leading-[1.5] text-[17px] text-black">
+        In boxes 1–7 on your answer sheet, write
+      </p>
+      <div className="mb-5 space-y-0.5 text-[17px] text-black pl-1">
+        <p>
+          <strong>TRUE</strong> if the statement agrees with the information
+        </p>
+        <p>
+          <strong>FALSE</strong> if the statement contradicts the information
+        </p>
+        <p>
+          <strong>NOT GIVEN</strong> if there is no information on this
+        </p>
+      </div>
 
       <div className="space-y-5">
         {TF_QUESTIONS.map((q, idx) => {
@@ -107,27 +111,35 @@ export default function Part1({ answers, setAnswer, currentQ, setCurrentQ, qRefs
         })}
       </div>
 
-      <h3 className="font-bold text-[17px] mb-1 mt-8">Questions 7-13</h3>
-      <p className="mb-4 text-[17px]">
-        Complete the notes. Write <strong>ONE WORD ONLY</strong> from the text for each answer.
+      <h3 className="font-bold text-[17px] mb-1 mt-8">Questions 8–13</h3>
+      <p className="mb-1 text-[17px]">Complete the notes below.</p>
+      <p className="mb-1 text-[17px]">
+        Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.
       </p>
-      <h4 className="font-bold text-[17px] mb-3">Marie Curie's research on radioactivity</h4>
+      <p className="mb-4 text-[17px]">Write your answers in boxes 8–13 on your answer sheet.</p>
 
-      <ul className="space-y-0.5 text-[17px] leading-[1.5] list-disc pl-5">
-        {NOTE_QUESTIONS.map((q) => (
-          <li key={q.num}>
-            {q.before}{" "}
-            <NumberedInput
-              num={q.num}
-              answers={answers}
-              setAnswer={setAnswer}
-              qRefs={qRefs}
-              currentQ={currentQ} setCurrentQ={setCurrentQ}
-            />{" "}
-            {q.after}
-          </li>
-        ))}
-      </ul>
+      <div className="border border-black px-5 py-4">
+        <h4 className="font-bold text-[17px] text-center mb-4">
+          The tennis racket and how it has changed
+        </h4>
+
+        <ul className="space-y-3 text-[17px] leading-[1.6] list-disc pl-5">
+          {NOTE_QUESTIONS.map((q) => (
+            <li key={q.num}>
+              {q.before}{" "}
+              <NumberedInput
+                num={q.num}
+                answers={answers}
+                setAnswer={setAnswer}
+                qRefs={qRefs}
+                currentQ={currentQ}
+                setCurrentQ={setCurrentQ}
+              />{" "}
+              {q.after}
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 }
