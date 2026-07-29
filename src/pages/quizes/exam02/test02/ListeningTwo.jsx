@@ -1,189 +1,258 @@
-import { useEffect, useMemo, useState } from "react";
-import { Bell, Menu, Wifi } from "lucide-react";
-import { FaBell } from "react-icons/fa";
-import { parts, totalQuestions } from "../../../../components/test02/quizData";
-// import { scoreQuestion } from "../../../../components/test01/quizUtils";
-import { PartFour, PartOne, PartThree, PartTwo } from "../../../../components/test02/Sections";
-import { useParams, useNavigate } from 'react-router-dom';
-import api from '../../../../api';
+import { useMemo, useRef, useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import api from "../../../../api";
 
-// অডিও ইম্পোর্ট
+import ExamHeader from "../../../../components/exam02/ExamHeader";
+import PartBanner from "../../../../components/exam02/PartBanner";
+import ExamFooter from "../../../../components/exam02/ExamFooter";
+import Part1 from "../../../../components/exam02/Part1";
+import Part2 from "../../../../components/exam02/Part2";
+import Part3 from "../../../../components/exam02/Part3";
+import Part4 from "../../../../components/exam02/Part4";
+import AudioOverlay from "../../../../components/exam02/AudioOverlay";
+
 import audio1 from "../../../../audio/test02/p1.mp3";
 import audio2 from "../../../../audio/test02/p2.mp3";
 import audio3 from "../../../../audio/test02/p3.mp3";
 import audio4 from "../../../../audio/test02/p4.mp3";
 
-import { FaVolumeHigh, FaVolumeHigh as FaVolumeHighIcon } from "react-icons/fa6";
-import Swal from 'sweetalert2';
+const EXAM_DURATION_MINUTES = 32;
 
-// ১. AudioComponent ইম্পোর্ট করুন (পাথ ঠিক করে নিন)
-import AudioComponent from "../../../../components/AudioComponent"; 
+const GROUPS = [
+  [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]],
+  [[11], [12], [13], [14], [15], [16], [17], [18], [19], [20]],
+  [[21], [22], [23], [24], [25], [26], [27], [28], [29], [30]],
+  [[31], [32], [33], [34], [35], [36], [37], [38], [39], [40]],
+];
 
-function cx(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+const PARTS = [
+  {
+    title: "Part 1",
+    intro: "Listen and answer questions 1–10.",
+    start: 1,
+    end: 10,
+    Component: Part1,
+  },
+  {
+    title: "Part 2",
+    intro: "Listen and answer questions 11–20.",
+    start: 11,
+    end: 20,
+    Component: Part2,
+  },
+  {
+    title: "Part 3",
+    intro: "Listen and answer questions 21–30.",
+    start: 21,
+    end: 30,
+    Component: Part3,
+  },
+  {
+    title: "Part 4",
+    intro: "Listen and answer questions 31–40.",
+    start: 31,
+    end: 40,
+    Component: Part4,
+  },
+];
 
-export default function ListeningOne() {
+const AUDIO_TRACKS = [audio1, audio2, audio3, audio4];
+
+export default function ListeningTwo() {
   const { examId, testNumber } = useParams();
   const navigate = useNavigate();
 
-  const [activePart, setActivePart] = useState(1);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [trackIndex, setTrackIndex] = useState(0);
+  const [activePart, setActivePart] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const [confirmed, setConfirmed] = useState(false);
-  const [secondsLeft, setSecondsLeft] = useState(30 * 60);
+  const [currentQ, setCurrentQ] = useState(1);
+  const [timeLeft, setTimeLeft] = useState(EXAM_DURATION_MINUTES * 60);
   const [isSaving, setIsSaving] = useState(false);
 
-  // ২. অডিও ট্র্যাকগুলোর অ্যারে তৈরি করুন
-  const allAudioTracks = [audio1, audio2, audio3, audio4];
+  const qRefs = useRef({});
+  const audioRef = useRef(null);
+  const answersRef = useRef(answers);
+  const isSavingRef = useRef(isSaving);
 
-  const calculateBandScore = (score) => {
-    if (score >= 39) return 9.0;
-    if (score >= 37) return 8.5;
-    if (score >= 35) return 8.0;
-    if (score >= 32) return 7.5;
-    if (score >= 30) return 7.0;
-    if (score >= 27) return 6.5;
-    if (score >= 23) return 6.0;
-    return 5.5;
+  useEffect(() => {
+    answersRef.current = answers;
+  }, [answers]);
+
+  useEffect(() => {
+    isSavingRef.current = isSaving;
+  }, [isSaving]);
+
+  const setAnswer = (key, value) => {
+    setAnswers((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const findPartIndex = (num) => PARTS.findIndex((p) => num >= p.start && num <= p.end);
+
+  const setCurrentQuestion = (num) => {
+    setCurrentQ(num);
+    const idx = findPartIndex(num);
+    if (idx !== -1 && idx !== activePart) setActivePart(idx);
+  };
+
+  const scrollToQ = (num) => {
+    const el = qRefs.current[num];
+    if (el && el.scrollIntoView) {
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+      if (typeof el.focus === "function") {
+        el.focus({ preventScroll: true });
+      }
+    }
+    setCurrentQuestion(num);
+  };
+
+  const switchPart = (idx) => {
+    setActivePart(idx);
+    const firstQ = PARTS[idx].start;
+    setCurrentQ(firstQ);
+    requestAnimationFrame(() => {
+      scrollToQ(firstQ);
+    });
+  };
+
+  const countAnswered = (partIdx) => {
+    const groups = GROUPS[partIdx];
+    return groups.reduce((count, g) => {
+      const key = g.length > 1 ? `${g[0]}-${g[g.length - 1]}` : String(g[0]);
+      const ans = answers[key];
+      if (Array.isArray(ans)) return count + (ans.length > 0 ? 1 : 0);
+      return count + (ans ? 1 : 0);
+    }, 0);
+  };
+
+  const allQs = useMemo(() => Array.from({ length: 40 }, (_, i) => i + 1), []);
+
+  const goPrev = () => {
+    const idx = allQs.indexOf(currentQ);
+    if (idx > 0) scrollToQ(allQs[idx - 1]);
+  };
+
+  const goNext = () => {
+    const idx = allQs.indexOf(currentQ);
+    if (idx < allQs.length - 1) scrollToQ(allQs[idx + 1]);
+  };
+
+  const ActiveComponent = PARTS[activePart].Component;
+
+  const handlePlayAudio = () => {
+    setTrackIndex(0);
+    setIsAudioPlaying(true);
+  };
+
+  const handleAudioEnded = () => {
+    setTrackIndex((prev) => (prev < AUDIO_TRACKS.length - 1 ? prev + 1 : prev));
   };
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setSecondsLeft((seconds) => Math.max(0, seconds - 1));
-    }, 1000);
-    return () => window.clearInterval(timer);
-  }, []);
+    if (!isAudioPlaying || !audioRef.current) return;
+    audioRef.current.load();
+    audioRef.current.play().catch((err) => console.error("Audio playback failed:", err));
+  }, [trackIndex, isAudioPlaying]);
 
-//   const score = useMemo(() => {
-//     return Array.from({ length: totalQuestions }, (_, index) => `q${index + 1}`).reduce(
-//       (total, question) => total + (scoreQuestion(question, answers) ? 1 : 0),
-//       0,
-//     );
-//   }, [answers]);
-
-  const minutes = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
-  const seconds = String(secondsLeft % 60).padStart(2, "0");
-
-  const handleFinalSubmit = async () => {
-    if (!confirmed || isSaving) return;
+  const handleAutoSubmit = useCallback(async () => {
+    if (isSavingRef.current) return;
 
     setIsSaving(true);
+
+    Swal.fire({
+      title: "Time Out!",
+      text: "Saving your exam answers automatically...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
-      const userData = JSON.parse(localStorage.getItem('user'));
+      const userData = JSON.parse(localStorage.getItem("user"));
       const userId = userData?.id;
       const formattedAnswers = {};
+
+      const currentAnswers = answersRef.current;
       for (let i = 1; i <= 40; i++) {
-        formattedAnswers[`ans${i}`] = answers[`q${i}`] || "";
+        formattedAnswers[`ans${i}`] = currentAnswers[String(i)] || currentAnswers[`q${i}`] || "";
       }
 
       const payload = {
         user_id: userId,
+        module_type: "listening",
         exam_id: Number(examId),
         test_id: Number(testNumber),
-        module_type: 'listening',
         answers: formattedAnswers,
       };
 
-      const response = await api.post('storeExamResult', payload);
-      
+      const response = await api.post("storeExamResult", payload);
+
       if (response.status === 200 || response.status === 201) {
-        setSubmitted(true);
-        Swal.fire({
-          title: 'Success!',
-          text: 'Exam Successfully Submitted',
-          icon: 'success',
-          confirmButtonColor: '#059669',
-        }).then((result) => {
-          if (result.isConfirmed) navigate(-1); 
-        });
+        Swal.close();
+        navigate(-1);
       }
     } catch (error) {
-      const errorMsg = error.response?.data?.debug_info || "Submission failed. Please try again.";
-      Swal.fire('Error', errorMsg, 'error');
+      Swal.close();
+      console.error("Auto submission failed:", error);
+      navigate(-1);
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [examId, testNumber, navigate]);
+
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      if (!isSavingRef.current) {
+        handleAutoSubmit();
+      }
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [handleAutoSubmit, timeLeft]);
 
   return (
-    <main className="min-h-screen bg-stone-50 pb-[4.8rem] text-[16px] text-black">
-      <header className="sticky top-0 z-20 bg-white px-5 pt-3 pb-6 text-stone-700 shadow-[0_2px_7px_rgba(0,0,0,0.12)]">
-        <div className="mx-auto flex w-full items-center justify-between gap-6 max-[820px]:flex-wrap max-[820px]:gap-y-2">
-          <div className="flex items-center gap-6 max-[820px]:w-full max-[820px]:justify-between">
-            <div className="flex items-center font-black">
-              <img className="w-20 object-contain md:w-[136px]" src="/ielts.svg" alt="Logo" />
-            </div>
-            <div className="grid gap-2 content-center justify-items-start text-[14px] text-stone-700">
-              <span>Test Taker ID: 123456</span>
-              <span className="flex items-center text-[#666666] gap-[5px]">
-                <FaVolumeHigh size={24} className="text-[#666666]" /> Audio Mode
-              </span>
-            </div>
-          </div>
+    <div className="h-screen overflow-hidden flex flex-col bg-white text-[#111]">
+      <audio
+        ref={audioRef}
+        src={AUDIO_TRACKS[trackIndex]}
+        preload="auto"
+        onEnded={handleAudioEnded}
+      />
+      {!isAudioPlaying && <AudioOverlay onPlay={handlePlayAudio} />}
+      <ExamHeader timeLeft={timeLeft} />
 
-          <div className={cx(
-            "whitespace-nowrap text-[24px] font-bold text-[#333333] max-[820px]:order-3 max-[820px]:w-full max-[820px]:text-center max-[820px]:text-[20px]",
-            secondsLeft <= 60 && "text-rose-600"
-          )}>
-            Time Remaining: {minutes}:{seconds}
-          </div>
-          <div className="flex items-center justify-end gap-[27px] max-[820px]:hidden cursor-pointer text-[#666666]">
-            <Wifi size={25} />
-            <FaBell size={21} />
-            <Menu size={24} />
-          </div>
+      <main className="flex-1 min-h-0 flex flex-col relative">
+        <div className="flex-1 min-h-0 overflow-y-auto pb-24">
+          <PartBanner title={PARTS[activePart].title} intro={PARTS[activePart].intro} />
+          <ActiveComponent
+            answers={answers}
+            setAnswer={setAnswer}
+            currentQ={currentQ}
+            setCurrentQ={setCurrentQuestion}
+            qRefs={qRefs}
+          />
         </div>
-      </header>
+      </main>
 
-      {/* ৩. এখন আর এরর আসবে না */}
-      <AudioComponent audioTracks={allAudioTracks} />
-
-     
-
-      <section className="block">
-        <div className="mx-auto min-w-0 w-[780px] max-w-[calc(100vw-36px)]">
-          {activePart === 1 && <PartOne answers={answers} setAnswers={setAnswers} submitted={submitted} />}
-          {activePart === 2 && <PartTwo answers={answers} setAnswers={setAnswers} submitted={submitted} />}
-          {activePart === 3 && <PartThree answers={answers} setAnswers={setAnswers} submitted={submitted} />}
-          {activePart === 4 && <PartFour answers={answers} setAnswers={setAnswers} submitted={submitted} />}
-        </div>
-      </section>
-
-      <footer className="mx-auto mb-2.5 flex w-[780px] max-w-[calc(100vw-36px)] flex-col items-center justify-center gap-[18px] px-5 pt-2.5">
-        <label className="flex items-center gap-[5px] text-[16px] font-normal text-black cursor-pointer">
-          <input 
-            type="checkbox" 
-            className="w-4 h-4"
-            checked={confirmed} 
-            onChange={(event) => setConfirmed(event.target.checked)} 
-          /> 
-          I confirm that I have answered all questions.
-        </label>
-
-        <button 
-          className="inline-flex h-[35px] min-w-[110px] items-center justify-center rounded-[5px] bg-emerald-600 px-5 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-55" 
-          disabled={!confirmed || isSaving || submitted} 
-          onClick={handleFinalSubmit}
-        >
-          {isSaving ? "Saving..." : submitted ? "Submitted" : "Submit Test"}
-        </button>
-      </footer>
-
-      <nav className="fixed inset-x-0 bottom-0 z-50 grid h-[50px] grid-cols-4 border-t border-stone-300 bg-stone-50 shadow-[0_-2px_7px_rgba(0,0,0,0.12)]" aria-label="Test parts">
-        {parts.map((part) => (
-          <button
-            key={part.id}
-            onClick={() => setActivePart(part.id)}
-            className={cx(
-              "cursor-pointer h-[50px] border-0 border-l border-stone-300 bg-stone-100 px-0 text-center text-[16px] leading-[50px] text-stone-700 hover:bg-stone-100 focus-visible:outline-none",
-              part.id === activePart ? "bg-stone-50 font-bold text-black" : "font-normal",
-            )}
-          >
-            <span>{part.title}</span>
-          </button>
-        ))}
-      </nav>
-    </main>
+      <ExamFooter
+        parts={PARTS}
+        groups={GROUPS}
+        activePart={activePart}
+        switchPart={switchPart}
+        currentQ={currentQ}
+        scrollToQ={scrollToQ}
+        answers={answers}
+        countAnswered={countAnswered}
+        goPrev={goPrev}
+        goNext={goNext}
+      />
+    </div>
   );
 }

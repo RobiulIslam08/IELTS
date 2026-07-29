@@ -114,7 +114,7 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
       >
         <h3 className="font-bold text-[17px] mb-1">Questions 14–19</h3>
         <p className="text-[17px] mb-3">
-          The text has seven paragraphs, <strong>A–G</strong>. Choose the correct information for
+          The text has seven paragraphs. Choose the correct information for
           each question and move it into the gap.
         </p>
         <p className="text-[17px] mb-3">
@@ -150,7 +150,7 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
       <h3 className="font-bold text-[17px] mb-1 mt-6">Questions 20 and 21</h3>
       <p className="text-[17px] mb-1">
-        Choose <strong>TWO</strong> letters, <strong>A–E</strong>.
+        Choose <strong>TWO</strong> correct answers.
       </p>
       <p className="text-[17px] mb-4">
         Write the correct letters in boxes 20 and 21 on your answer sheet.
@@ -166,7 +166,7 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
       <h3 className="font-bold text-[17px] mb-1 mt-6">Questions 22 and 23</h3>
       <p className="text-[17px] mb-1">
-        Choose <strong>TWO</strong> letters, <strong>A–E</strong>.
+        Choose <strong>TWO</strong> correct answers.
       </p>
       <p className="text-[17px] mb-4">
         Write the correct letters in boxes 22 and 23 on your answer sheet.
