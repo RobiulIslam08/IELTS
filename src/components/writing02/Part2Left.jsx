@@ -4,7 +4,7 @@ export default function Part2Left() {
     <div className="text-[16px] leading-[1.6] text-black mt-3">
       <p className="mb-5">Write about the following topic:</p>
 
-      <div className="mb-5 border border-black p-4">
+      <div className="mb-5  p-4">
         <p className="mb-4 font-bold italic">
           The working week should be shorter and workers should have a longer weekend.
         </p>

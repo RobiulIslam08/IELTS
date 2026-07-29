@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import SocialCallback from '../components/common/SocialCallback';
+import GoogleAnalytics from '../components/common/GoogleAnalytics';
 // Layouts
 import MainLayout from '../layout/MainLayout';
 import PublicLayout from '../layout/PublicLayout';
@@ -321,7 +322,12 @@ export const router = createBrowserRouter([
     // Catch-all
     {
         path: '*',
-        element: <NotFoundPage />,
+        element: (
+            <>
+                <GoogleAnalytics />
+                <NotFoundPage />
+            </>
+        ),
     },
 ]);
 
