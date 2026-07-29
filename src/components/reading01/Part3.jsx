@@ -133,7 +133,7 @@ function PhraseDrop({ num, answers, setAnswer, currentQ, setCurrentQ, qRefs }) {
             className="cursor-grab active:cursor-grabbing"
             title="Click to remove, or drag to move"
           >
-            <strong>{placed.id}</strong> {placed.text}
+            {placed.text}
           </span>
         ) : (
           <span className="text-gray-600 pointer-events-none">{num}</span>
@@ -162,7 +162,6 @@ function DraggablePhrase({ id, text, used }) {
           : "cursor-grab active:cursor-grabbing hover:bg-gray-50"
       }`}
     >
-      <span className="mr-1.5">{id}</span>
       {text}
     </div>
   );
@@ -246,12 +245,9 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
       {/* Questions 31–36 — Summary + side List of Phrases (drag & drop) */}
       <h3 className="font-bold text-[17px] mb-1 mt-8">Questions 31–36</h3>
-      <p className="mb-1 text-[17px]">
-        Complete the summary using the list of phrases, <strong>A–J</strong>, on the right.
-      </p>
+      <p className="mb-1 text-[17px]">Complete the summary using the list of phrases on the right.</p>
       <p className="mb-4 text-[17px]">
-        Drag the correct phrase into each gap. Write the correct letter, <strong>A–J</strong>, in
-        boxes 31–36 on your answer sheet.
+        Drag the correct phrase into each gap. Write your answers in boxes 31–36 on your answer sheet.
       </p>
 
       <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start">

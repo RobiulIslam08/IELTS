@@ -123,7 +123,7 @@ function PhraseDrop({ num, answers, setAnswer, currentQ, setCurrentQ, qRefs }) {
             className="cursor-grab active:cursor-grabbing"
             title="Click to remove, or drag to move"
           >
-            <strong>{placed.id}</strong> {placed.text}
+            {placed.text}
           </span>
         ) : (
           <span className="text-gray-600 pointer-events-none">{num}</span>
@@ -152,7 +152,6 @@ function DraggablePhrase({ id, text, used }) {
           : "cursor-grab active:cursor-grabbing hover:bg-gray-50"
       }`}
     >
-      <span className="mr-1.5">{id}</span>
       {text}
     </div>
   );
@@ -180,12 +179,9 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
   return (
     <>
       <h3 className="font-bold text-[17px] mb-1">Questions 27–32</h3>
-      <p className="mb-1 text-[17px]">
-        Complete the summary using the list of phrases, <strong>A–K</strong>, on the right.
-      </p>
+      <p className="mb-1 text-[17px]">Complete the summary using the list of phrases on the right.</p>
       <p className="mb-4 text-[17px]">
-        Drag the correct phrase into each gap. Write the correct letter, <strong>A–K</strong>, in boxes
-        27–32 on your answer sheet.
+        Drag the correct phrase into each gap. Write your answers in boxes 27–32 on your answer sheet.
       </p>
 
       <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start">
