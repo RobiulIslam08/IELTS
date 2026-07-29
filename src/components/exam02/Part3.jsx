@@ -214,8 +214,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
               What reasons did the recycling manager give for rejecting footwear, according to the students?
             </p>
             <p className="text-[17px]">
-              Choose <span className="font-bold">FOUR</span> answers from the box and write the correct letter,{" "}
-              <span className="font-bold">A–F</span>, next to Questions 25–28.
+              Choose <span className="font-bold">FOUR</span> answers from the box and write them next to Questions 25–28.
             </p>
           </div>
           <button
