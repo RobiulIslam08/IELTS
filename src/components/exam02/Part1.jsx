@@ -20,9 +20,9 @@ export default function Part1({ answers, setAnswer, currentQ, setCurrentQ, qRefs
         </p>
       </div>
 
-      <div className="border border-gray-500 p-6 max-w-[700px] mb-12 space-y-4 text-[17px]">
-        <h3 className="font-bold text-[19px] text-center mb-6">Guitar Group</h3>
+      <h3 className="font-bold text-[19px] mb-6">Guitar Group</h3>
 
+      <div className="mb-12 space-y-4 text-[17px] text-black max-w-[700px]">
         <div className="grid grid-cols-[180px_1fr] gap-x-3 gap-y-4 items-start">
           <span className="font-semibold pt-0.5">Coordinator:</span>
           <div className="flex items-center flex-wrap gap-y-2">
@@ -71,7 +71,7 @@ export default function Part1({ answers, setAnswer, currentQ, setCurrentQ, qRefs
         </p>
       </div>
 
-      <h3 className="font-bold text-[19px] mb-3">A typical 45-minute guitar lesson</h3>
+      <h3 className="font-bold text-[19px] mb-4">A typical 45-minute guitar lesson</h3>
 
       <div className="overflow-x-auto max-w-[900px]">
         <table className="w-full border-collapse text-[17px] text-left">
@@ -89,7 +89,7 @@ export default function Part1({ answers, setAnswer, currentQ, setCurrentQ, qRefs
               <td className="border border-gray-500 px-3 py-2 align-top">
                 <div className="flex items-center flex-wrap gap-y-2">
                   <span className="mr-1">using an app or by</span>
-                  <NumberedInput {...iprops(7)} width={120} />
+                  <NumberedInput {...iprops(7)} />
                 </div>
               </td>
             </tr>
@@ -99,7 +99,7 @@ export default function Part1({ answers, setAnswer, currentQ, setCurrentQ, qRefs
               <td className="border border-gray-500 px-3 py-2 align-top">
                 <div className="flex items-center flex-wrap gap-y-2">
                   <span className="mr-1">keeping time while the teacher is</span>
-                  <NumberedInput {...iprops(8)} width={120} />
+                  <NumberedInput {...iprops(8)} />
                 </div>
               </td>
             </tr>
@@ -109,7 +109,7 @@ export default function Part1({ answers, setAnswer, currentQ, setCurrentQ, qRefs
               <td className="border border-gray-500 px-3 py-2 align-top">
                 <div className="flex items-center flex-wrap gap-y-2">
                   <span className="mr-1">often listening to a</span>
-                  <NumberedInput {...iprops(9)} width={120} />
+                  <NumberedInput {...iprops(9)} />
                   <span className="ml-1">of a song</span>
                 </div>
               </td>
@@ -120,7 +120,7 @@ export default function Part1({ answers, setAnswer, currentQ, setCurrentQ, qRefs
               <td className="border border-gray-500 px-3 py-2 align-top">
                 <div className="flex items-center flex-wrap gap-y-2">
                   <span className="mr-1">playing together, then</span>
-                  <NumberedInput {...iprops(10)} width={120} />
+                  <NumberedInput {...iprops(10)} />
                 </div>
               </td>
             </tr>

@@ -78,8 +78,8 @@ const MCQ_29_30 = [
   },
 ];
 
-const letterToReason = Object.fromEntries(REASONS.map((o) => [o.letter, `${o.letter} ${o.text}`]));
-const reasonLabelToLetter = Object.fromEntries(REASONS.map((o) => [`${o.letter} ${o.text}`, o.letter]));
+const letterToReason = Object.fromEntries(REASONS.map((o) => [o.letter, o.text]));
+const reasonToLetter = Object.fromEntries(REASONS.map((o) => [o.text, o.letter]));
 
 export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs }) {
   const [draggedOption, setDraggedOption] = useState(null);
@@ -107,23 +107,23 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
     );
   };
 
-  const isOptionPlaced = (optLabel) => {
-    const letter = reasonLabelToLetter[optLabel];
+  const isOptionPlaced = (optText) => {
+    const letter = reasonToLetter[optText];
     for (let i = 25; i <= 28; i++) {
       if (answers[String(i)] === letter) return true;
     }
     return false;
   };
 
-  const handleDragStart = (e, optLabel) => {
-    setDraggedOption(optLabel);
-    e.dataTransfer.setData("text/plain", optLabel);
+  const handleDragStart = (e, optText) => {
+    setDraggedOption(optText);
+    e.dataTransfer.setData("text/plain", optText);
   };
 
   const handleDrop = (e, questionId) => {
     e.preventDefault();
-    const optLabel = draggedOption || e.dataTransfer.getData("text/plain");
-    const letter = reasonLabelToLetter[optLabel];
+    const optText = draggedOption || e.dataTransfer.getData("text/plain");
+    const letter = reasonToLetter[optText];
     if (letter) {
       const prevKey = Object.keys(answers).find((key) => answers[key] === letter);
       if (prevKey) setAnswer(prevKey, "");
@@ -136,8 +136,8 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
   const handleDropToPool = (e) => {
     e.preventDefault();
-    const optLabel = draggedOption || e.dataTransfer.getData("text/plain");
-    const letter = reasonLabelToLetter[optLabel];
+    const optText = draggedOption || e.dataTransfer.getData("text/plain");
+    const letter = reasonToLetter[optText];
     if (letter) {
       const prevKey = Object.keys(answers).find((key) => answers[key] === letter);
       if (prevKey) setAnswer(prevKey, "");
@@ -148,15 +148,15 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
   const handleDragOver = (e) => e.preventDefault();
 
-  const handleOptionClick = (optLabel) => {
-    setSelectedOption((prev) => (prev === optLabel ? null : optLabel));
+  const handleOptionClick = (optText) => {
+    setSelectedOption((prev) => (prev === optText ? null : optText));
   };
 
   const handleSlotClick = (questionId) => {
     const currentVal = answers[String(questionId)];
 
     if (selectedOption) {
-      const letter = reasonLabelToLetter[selectedOption];
+      const letter = reasonToLetter[selectedOption];
       const prevKey = Object.keys(answers).find((key) => answers[key] === letter);
       if (prevKey) setAnswer(prevKey, "");
       setAnswer(String(questionId), letter);
@@ -202,6 +202,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
             Choose the correct letter, <span className="font-bold">A, B or C</span>.
           </p>
         </div>
+        <h3 className="font-bold text-[19px] mb-6">Recycling footwear</h3>
         {renderMcqBlock(MCQ_21_24)}
       </div>
 
@@ -226,20 +227,9 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
           </button>
         </div>
 
-        <div className="border border-gray-500 p-4 mb-8 max-w-[520px]">
-          <h3 className="font-bold text-[17px] text-center mb-3">Reasons</h3>
-          <div className="space-y-1 text-[17px]">
-            {REASONS.map((r) => (
-              <div key={r.letter}>
-                <span className="font-bold mr-2">{r.letter}</span>
-                {r.text}
-              </div>
-            ))}
-          </div>
-        </div>
-
         <div className="flex gap-8 items-start">
           <div className="flex flex-col gap-4">
+            <div className="font-bold text-[17px] mb-1">Footwear</div>
             {FOOTWEAR_ITEMS.map((item) => {
               const assignedLetter = answers[String(item.id)];
               const displayText = letterToReason[assignedLetter];
@@ -269,7 +259,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
                           }`
                     }`}
                   >
-                    {assignedLetter || item.id}
+                    {displayText || item.id}
                   </div>
                 </div>
               );
@@ -277,19 +267,18 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
           </div>
 
           <div className="flex flex-col gap-3" onDragOver={handleDragOver} onDrop={handleDropToPool}>
-            <div className="font-semibold text-[17px] mb-1">Letters</div>
+            <div className="font-semibold text-[17px] mb-1">Reasons</div>
             <div className="flex flex-col gap-2">
               {REASONS.map((opt) => {
-                const optLabel = `${opt.letter} ${opt.text}`;
-                const placed = isOptionPlaced(optLabel);
-                const isSelected = selectedOption === optLabel;
+                const placed = isOptionPlaced(opt.text);
+                const isSelected = selectedOption === opt.text;
 
                 return (
                   <div
                     key={opt.letter}
                     draggable={!placed}
-                    onDragStart={(e) => handleDragStart(e, optLabel)}
-                    onClick={() => !placed && handleOptionClick(optLabel)}
+                    onDragStart={(e) => handleDragStart(e, opt.text)}
+                    onClick={() => !placed && handleOptionClick(opt.text)}
                     className={`px-2.5 py-0.5 border border-gray-600 text-[14px] rounded-[4px] select-none transition-all w-fit ${
                       placed
                         ? "bg-gray-100 border-gray-200 cursor-not-allowed opacity-0"
@@ -298,7 +287,7 @@ export default function Part3({ answers, setAnswer, currentQ, setCurrentQ, qRefs
                           : "bg-white text-black hover:bg-gray-50 cursor-grab active:cursor-grabbing"
                     }`}
                   >
-                    {opt.letter}
+                    {opt.text}
                   </div>
                 );
               })}
