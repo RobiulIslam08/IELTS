@@ -8,6 +8,9 @@ export default function ExamFooter({
   answeredStatus,
   goPrev,
   goNext,
+  onSubmit,
+  isSaving = false,
+  submitted = false,
 }) {
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-20 h-12 overflow-visible border-t border-gray-300 bg-white">
@@ -39,12 +42,14 @@ export default function ExamFooter({
               <div
                 key={p.title}
                 onClick={() => switchPart(idx)}
-                className={`h-full flex items-center justify-center gap-2 px-2 cursor-pointer hover:bg-gray-100 ${isActive ? "hover:bg-white" : ""
-                  }`}
+                className={`h-full flex items-center justify-center gap-2 px-2 cursor-pointer hover:bg-gray-100 ${
+                  isActive ? "hover:bg-white" : ""
+                }`}
               >
                 <span
-                  className={`text-[17px] whitespace-nowrap ${isActive ? "text-black font-medium" : "text-gray-700"
-                    }`}
+                  className={`text-[17px] whitespace-nowrap ${
+                    isActive ? "text-black font-medium" : "text-gray-700"
+                  }`}
                 >
                   {p.title}
                 </span>
@@ -59,9 +64,15 @@ export default function ExamFooter({
           })}
         </div>
 
-        {/* Submit button */}
         <div className="flex h-full items-center border-l border-gray-300 px-3">
-          <button type="button" aria-label="Submit">
+          <button
+            type="button"
+            aria-label="Submit"
+            onClick={onSubmit}
+            disabled={isSaving || submitted}
+            className="disabled:opacity-40 disabled:cursor-not-allowed"
+            title={submitted ? "Submitted" : isSaving ? "Saving..." : "Submit test"}
+          >
             <Check className="h-4 w-4 text-gray-700" />
           </button>
         </div>

@@ -8,12 +8,12 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
   // Q11-15: Matching
   const people = [
-    { id: 11, name: "11 Superheroes" },
-    { id: 12, name: "12 Just do it" },
-    { id: 13, name: "13 Count on me" },
-    { id: 14, name: "14 Speak up" },
-    { id: 15, name: "15 Jump for joy" },
-    { id: 16, name: "16 Sticks and stones" },
+    { id: 11, name: "Superheroes" },
+    { id: 12, name: "Just do it" },
+    { id: 13, name: "Count on me" },
+    { id: 14, name: "Speak up" },
+    { id: 15, name: "Jump for joy" },
+    { id: 16, name: "Sticks and stones" },
   ];
 
   const poolOptions1 = [
@@ -152,7 +152,9 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
           <div>
             <h2 className="font-bold text-[16px] mb-1">Questions 11–16</h2>
             <p className="text-[17px]">What information is given about each of the following festival workshops?</p>
-            <p className="text-[17px]">Choose SIX answers from the box and write the correct letter, A-H, next to Questions 11-16.</p>
+            <p className="text-[17px]">
+              Choose <span className="font-bold">SIX</span> answers from the box and write the correct letter next to Questions 11–16.
+            </p>
           </div>
           <button className="flex items-center gap-1 text-[13px] text-[#1a5fb4] hover:underline font-semibold mt-1">
             <Keyboard className="w-4 h-4" />
@@ -171,7 +173,8 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
 
               return (
                 <div key={person.id} className="flex items-center gap-2 h-[32px]">
-                  <span className="text-[17px] text-black">{person.name}</span>
+                  <span className="text-[17px] text-black font-bold min-w-[24px]">{person.id}</span>
+                  <span className="text-[17px] text-black min-w-[140px]">{person.name}</span>
                   <div
                     ref={(el) => {
                       if (el && qRefs) qRefs.current[person.id] = el;
@@ -233,8 +236,14 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
       <div className="pt-12">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h2 className="font-bold text-[16px] mb-1">Questions 17 And 18</h2>
-            <p className="text-[17px]">Choose TWO letters, A-E.</p>
+            <h2 className="font-bold text-[16px] mb-1">Questions 17 and 18</h2>
+            <p className="text-[17px]">
+              Choose <span className="font-bold">TWO</span> letters, <span className="font-bold">A–E</span>.
+            </p>
+            <p className="text-[17px] mt-2">
+              Which <span className="font-bold">TWO</span> reasons does the speaker give for recommending{" "}
+              <em>Alive and Kicking</em>?
+            </p>
           </div>
           <button className="flex items-center gap-1 text-[13px] text-[#1a5fb4] hover:underline font-semibold mt-1">
             <Keyboard className="w-4 h-4" />
@@ -246,7 +255,10 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
         <div
           className="mb-12 border-b border-gray-100 pb-8"
           ref={(el) => {
-            if (el && qRefs) qRefs.current[17] = el;
+            if (el && qRefs) {
+              qRefs.current[17] = el;
+              qRefs.current[18] = el;
+            }
           }}
         >
           <div className="flex flex-col gap-3 mt-4 ml-2">
@@ -288,17 +300,21 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
         <div
           className="mb-16"
           ref={(el) => {
-            if (el && qRefs) qRefs.current[19] = el;
+            if (el && qRefs) {
+              qRefs.current[19] = el;
+              qRefs.current[20] = el;
+            }
           }}
         >
           <div className="flex justify-between items-start mb-4">
             <div>
               <h2 className="font-bold text-[16px] mb-1">Questions 19 and 20</h2>
-              <p className="text-[17px] text-gray-800">
-                Choose <strong>TWO</strong> letters, A–E.
+              <p className="text-[17px]">
+                Choose <span className="font-bold">TWO</span> letters, <span className="font-bold">A–E</span>.
               </p>
-              <p className="text-[17px] mt-2 text-gray-800">
-                Which <strong>TWO</strong> pieces of advice does the speaker give to parents about reading?
+              <p className="text-[17px] mt-2">
+                Which <span className="font-bold">TWO</span> pieces of advice does the speaker give to parents about
+                reading?
               </p>
             </div>
           </div>

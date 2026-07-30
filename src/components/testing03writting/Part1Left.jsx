@@ -18,7 +18,7 @@ export default function Part1Left() {
       <div className="mt-4">
         <img
           src={ChartImg}
-          alt="Bar chart showing number of adults participating in major sports, 1997 and 2017"
+          alt="Biofuel production: how ethanol is made"
           className="max-w-full h-auto"
         />
       </div>

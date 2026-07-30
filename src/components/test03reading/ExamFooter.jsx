@@ -11,6 +11,9 @@ export default function ExamFooter({
   countAnswered,
   goPrev,
   goNext,
+  onSubmit,
+  isSaving = false,
+  submitted = false,
 }) {
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-20 h-12 overflow-visible border-t border-gray-300 bg-white">
@@ -43,12 +46,14 @@ export default function ExamFooter({
               <div
                 key={p.title}
                 onClick={() => switchPart(idx)}
-                className={`h-full flex items-center justify-center gap-2 px-2 cursor-pointer hover:bg-gray-100 ${isActive ? "hover:bg-white" : ""
-                  }`}
+                className={`h-full flex items-center justify-center gap-2 px-2 cursor-pointer hover:bg-gray-100 ${
+                  isActive ? "hover:bg-white" : ""
+                }`}
               >
                 <span
-                  className={`text-[17px] text-black  whitespace-nowrap ${isActive ? "text-black" : "text-gray-700"
-                    }`}
+                  className={`text-[17px] text-black whitespace-nowrap ${
+                    isActive ? "text-black" : "text-gray-700"
+                  }`}
                 >
                   {p.title}
                 </span>
@@ -61,9 +66,15 @@ export default function ExamFooter({
                       return (
                         <button
                           key={label}
-                          onClick={(e) => { e.stopPropagation(); scrollToQ(g[0]); }}
-                          className={`text-[17px] cursor-pointer hover:border hover:border-[#1a5fb4]     px-0.5 ${isCur ? "text-[#1a5fb4] border border-[#1a5fb4] rounded-[2px]" : "text-black"
-                            }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            scrollToQ(g[0]);
+                          }}
+                          className={`text-[17px] cursor-pointer hover:border hover:border-[#1a5fb4] px-0.5 ${
+                            isCur
+                              ? "text-[#1a5fb4] border border-[#1a5fb4] rounded-[2px]"
+                              : "text-black"
+                          }`}
                         >
                           {label}
                         </button>
@@ -80,9 +91,15 @@ export default function ExamFooter({
           })}
         </div>
 
-        {/* সাবমিট বাটনের সাইজ ও প্যাডিং কমানো */}
         <div className="flex h-full items-center border-l border-gray-300 px-3">
-          <button type="button" aria-label="Submit">
+          <button
+            type="button"
+            aria-label="Submit"
+            onClick={onSubmit}
+            disabled={isSaving || submitted}
+            className="disabled:opacity-40 disabled:cursor-not-allowed"
+            title={submitted ? "Submitted" : isSaving ? "Saving..." : "Submit test"}
+          >
             <Check className="h-4 w-4 text-gray-700" />
           </button>
         </div>
