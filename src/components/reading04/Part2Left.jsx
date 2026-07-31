@@ -1,0 +1,123 @@
+// @ts-nocheck
+const MATCH_ITEMS = [
+  {
+    num: 14,
+    text: "reference to the rapidly increasing need for one raw material in the transport industry",
+  },
+  {
+    num: 15,
+    text: "a rough estimate of the area of the Earth covered by the oceans",
+  },
+  {
+    num: 16,
+    text: "how a particular underwater habitat, where minerals and organisms co-exist, is formed",
+  },
+  {
+    num: 17,
+    text: "reference to the fact that the countries of the world have yet to agree on rules for the exploration of the seabed",
+  },
+];
+
+const PARAGRAPHS = [
+  {
+    id: "A",
+    text: `When Professor Mat Upton found that a microbe from a deep-sea sponge was killing pathogenic bugs in his laboratory, he realised it could be a breakthrough in the fight against antibiotic-resistant superbugs, which are responsible for thousands of deaths a year in the UK alone. Further tests confirmed that an antibiotic from the sponge bacteria, found living more than 700 metres under the sea at the Rockall trough in the north-east Atlantic, was previously unknown to science, boosting its potential as a life-saving medicine. But Upton, and other scientists who view the deep ocean and its wealth of unique and undocumented species as a prospecting ground for new medicines, fear such potential will be lost in the rush to exploit the deep sea's equally rich metal and mineral resources.`,
+  },
+  {
+    id: "B",
+    text: `'We're looking at the bioactive potential of marine resources, to see if there are any more medicines or drugs down there before we destroy it for ever,' says Upton, a medical microbiologist at the University of Plymouth. He is among many scientists urging a halt to deep-sea mining, asking for time to weigh up the pros and cons. 'In sustainability terms, this could be a better way of exploiting the economic potential of the deep sea,' he argues. Oceanographers using remotely operated vehicles have spotted many new species. Among them have been sea cucumbers with tails allowing them to sail along the ocean floor, and a rare 'Dumbo' octopus, found 3,000 metres under the Pacific Ocean, off the coast of California. Any one of these could offer lifesaving potential. Upton estimates it could take up to a decade for a newly discovered antibiotic to become a medicine but the race towards commercial mining in the ocean abyss has already begun.`,
+  },
+  {
+    id: "C",
+    text: `The deep sea contains more nickel, cobalt and rare earth metals than all land reserves combined, according to the US Geological Survey. Mining corporations argue that deep-sea exploration could help diversify the supply of metals and point to the fact that demand for resources such as copper, aluminum, cobalt for electric car batteries and other metals to power technology and smartphones, is soaring. They say that deep-sea mining could yield far superior ore to land mining with little, if any, waste. Different methods of extraction exist, but most involve employing some form of converted machinery previously used in terrestrial mining to excavate materials from the sea floor, at depths of up to 6,000 meters, then drawing a seawater slurry, containing rock and other solid particles, from the sea floor to ships on the surface. The slurry is then 'de-watered' and transferred to another vessel for shipping. Extracted seawater is pumped back down and discharged close to the sea floor.`,
+  },
+  {
+    id: "D",
+    text: `But environmental and legal groups have urged caution, arguing there are potentially massive and unknown ramifications for the environment and for nearby communities, and that the global regulatory framework is not yet drafted. 'Despite arising in the last half century, the "new global gold rush" of deep-sea mining shares many features with past resource scrambles – including a general disregard for environmental and social impacts, and the marginalisation of indigenous peoples and their rights,' a paper, written by Julie Hunter and Julian Aguon, from Blue Ocean Law, and Pradeep Singh, from the Center for Marine Environmental Sciences, Bremen, argues. The authors say that knowledge of the deep seabed remains extremely limited. 'The surface of the Moon, Mars and even Venus have all been mapped and studied in much greater detail, leading marine scientists to commonly remark that, with respect to the deep sea, "We don't yet know what we need to know".`,
+  },
+  {
+    id: "E",
+    text: `Scientific research – including a recent paper in Marine Policy journal – has suggested the deep seabed, and hydrothermal vents, which are created when seawater meets volcanic magma, have crucial impacts upon biodiversity and the global climate. The mineral-rich vents and their surrounds are also home to many well-known animals including crustaceans, tubeworms, clams, slugs, anemones and fish. 'It is becoming increasingly clear that deep-sea mining poses a grave threat to these vital seabed functions,' the paper says. 'Extraction methods would produce large sediment plumes and involve the discharge of waste back into the ocean, significantly disturbing seafloor environments,' the paper continues. 'On deep sea vents, scientists are clear,' says Dr Jon Copley of the National Oceanography Centre, Southampton: 'We don't want mining on them.'`,
+  },
+  {
+    id: "F",
+    text: `The oceans occupy around 70% of the planet and are relatively unexplored, says Mike Johnston, chief executive of Nautilus, a Canadian underwater exploration company: 'It makes sense to explore this untapped potential in an environmentally sustainable way, instead of continually looking at the fast depleting land resources of the planet to meet society's rising needs.' Those leading the global rush to place giant mining machines thousands of metres below the sea surface say the environmental impacts will be far lower than on land. But critics say exotic and little-known ecosystems in the deep oceans could be destroyed and must be protected. 'Mining will be the greatest assault on deep-sea ecosystems ever inflicted by humans,' according to hydrothermal vent expert Verena Tunnicliffe, at the University of Victoria in Canada. She argues that active vents must be off-limits for mining to protect the new knowledge and biotechnology spin-offs they can deliver, and that strict controls must be in place elsewhere.`,
+  },
+];
+
+const EMPTY_LABEL = { A: 14, B: 15, C: 16, D: 17, E: 14, F: 15 };
+
+function findItem(num) {
+  return MATCH_ITEMS.find((item) => item.num === num);
+}
+
+function StatementSlot({ paragraphId, answers, setAnswer }) {
+  const placedNums = MATCH_ITEMS.map((item) => item.num).filter(
+    (num) => answers[String(num)] === paragraphId
+  );
+
+  const onDrop = (e) => {
+    e.preventDefault();
+    const raw = e.dataTransfer.getData("text/statement");
+    if (!raw) return;
+    const num = Number(raw);
+    if (!num) return;
+    setAnswer(String(num), paragraphId);
+  };
+
+  const clearOne = (num) => setAnswer(String(num), null);
+
+  return (
+    <div
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={onDrop}
+      className="border border-dashed border-gray-500 rounded-sm my-2 min-h-[36px] flex flex-col items-center justify-center text-center text-[17px] font-bold bg-white px-2 py-1.5 gap-1"
+    >
+      {placedNums.length === 0 ? (
+        <span className="text-gray-600 font-semibold">{EMPTY_LABEL[paragraphId]}</span>
+      ) : (
+        placedNums.map((num) => {
+          const item = findItem(num);
+          return (
+            <span
+              key={num}
+              draggable
+              onDragStart={(e) => {
+                e.dataTransfer.setData("text/statement", String(num));
+                e.dataTransfer.effectAllowed = "move";
+              }}
+              className="bg-white px-2 py-0.5 cursor-pointer w-full text-left font-bold leading-[1.3]"
+              onClick={() => clearOne(num)}
+              title="Click to remove"
+            >
+              {item?.text}
+            </span>
+          );
+        })
+      )}
+    </div>
+  );
+}
+
+export default function Part2Left({ answers, setAnswer }) {
+  return (
+    <>
+      <h2 className="font-bold text-[18px] mb-1">Deep-sea Mining</h2>
+      <p className="text-[16px] italic mb-3 text-black">
+        Bacteria from the ocean floor can beat superbugs and cancer. But habitats are at risk from
+        the hunger for marine minerals
+      </p>
+
+      <div className="space-y-2 leading-[1.5] text-[17px] text-black">
+        {PARAGRAPHS.map((p) => (
+          <div key={p.id}>
+            <StatementSlot paragraphId={p.id} answers={answers} setAnswer={setAnswer} />
+            <div className="flex gap-3 mb-4">
+              <p className="flex-1">{p.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}

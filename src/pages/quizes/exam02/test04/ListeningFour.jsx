@@ -1,18 +1,20 @@
 import { useMemo, useRef, useState, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import api from "../../../../api";
-import ExamHeader from "../../../../components/exam03/ExamHeader";
-import PartBanner from "../../../../components/exam03/PartBanner";
-import ExamFooter from "../../../../components/exam03/ExamFooter";
-import AudioOverlay from "../../../../components/exam03/AudioOverlay";
+
+import ExamHeader from "../../../../components/exam04/ExamHeader";
+import PartBanner from "../../../../components/exam04/PartBanner";
+import ExamFooter from "../../../../components/exam04/ExamFooter";
 import Part1 from "../../../../components/exam04/Part1";
 import Part2 from "../../../../components/exam04/Part2";
 import Part3 from "../../../../components/exam04/Part3";
 import Part4 from "../../../../components/exam04/Part4";
-import AudioPath from "./fullaudio.mp3";
+import AudioOverlay from "../../../../components/exam04/AudioOverlay";
 
-const EXAM_DURATION_MINUTES = 30;
+import AudioPath from "../../../../audio/test04/fullaudio.mp3";
+
+const EXAM_DURATION_MINUTES = 32;
 
 const GROUPS = [
   [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]],
@@ -159,15 +161,15 @@ export default function ListeningFour() {
       const formattedAnswers = {};
 
       const currentAnswers = answersRef.current;
-      for (let i = 1; i <= 40; i += 1) {
+      for (let i = 1; i <= 40; i++) {
         formattedAnswers[`ans${i}`] = currentAnswers[String(i)] || currentAnswers[`q${i}`] || "";
       }
 
       const payload = {
         user_id: userId,
-        exam_id: Number(examId || 2),
-        test_id: Number(testNumber || 4),
         module_type: "listening",
+        exam_id: Number(examId),
+        test_id: Number(testNumber),
         answers: formattedAnswers,
       };
 
@@ -184,7 +186,7 @@ export default function ListeningFour() {
     } finally {
       setIsSaving(false);
     }
-  }, [examId, navigate, testNumber]);
+  }, [examId, testNumber, navigate]);
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -202,13 +204,13 @@ export default function ListeningFour() {
   }, [handleAutoSubmit, timeLeft]);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-white text-[#111]">
+    <div className="h-screen overflow-hidden flex flex-col bg-white text-[#111]">
       <audio ref={audioRef} src={AudioPath} preload="auto" />
       {!isAudioPlaying && <AudioOverlay onPlay={handlePlayAudio} />}
       <ExamHeader timeLeft={timeLeft} />
 
-      <main className="relative flex min-h-0 flex-1 flex-col">
-        <div className="min-h-0 flex-1 overflow-y-auto pb-24">
+      <main className="flex-1 min-h-0 flex flex-col relative">
+        <div className="flex-1 min-h-0 overflow-y-auto pb-24">
           <PartBanner title={PARTS[activePart].title} intro={PARTS[activePart].intro} />
           <ActiveComponent
             answers={answers}
