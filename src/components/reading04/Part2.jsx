@@ -118,11 +118,8 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
       >
         <h3 className="font-bold text-[17px] mb-1">Questions 14–17</h3>
         <p className="text-[17px] mb-3">
-          Reading Passage 2 has six paragraphs, A–F. Which paragraph contains the following
-          information? Choose the correct information for each question and move it into the gap.
-        </p>
-        <p className="text-[17px] mb-3">
-          Write the correct letter, <strong>A–F</strong>, in boxes 14–17 on your answer sheet.
+          The text has six paragraphs. Choose the correct information for each question and move it into
+          the gap.
         </p>
 
         <p className="font-semibold text-[17px] mb-2">List of Information</p>
@@ -160,13 +157,10 @@ export default function Part2({ answers, setAnswer, currentQ, setCurrentQ, qRefs
         <h3 className="font-bold text-[17px] mb-1">Questions 18–23</h3>
         <p className="text-[17px] mb-3">
           Look at the following statements (Questions 18–23) and the list of people below. Match each
-          statement with the correct person or people, A–E.
-        </p>
-        <p className="text-[17px] mb-3">
-          Write the correct letter, <strong>A–E</strong>, in boxes 18–23 on your answer sheet.
+          statement with the correct person or people.
         </p>
         <p className="text-[17px] mb-4">
-          <strong>NB</strong> You may use any letter more than once.
+          <strong>NB</strong> You may use any person more than once.
         </p>
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
